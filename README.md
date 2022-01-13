@@ -6,11 +6,10 @@ TODO:
 
 aum_server:
 - implement httpx for async calls to controller
-- add  task logger
 - add mypy
-- set different dev/prod build
 
 controller:
+- add tokens to aum_server
 - add to code -> @validate_arguments
 - add DB (redis probably) for keeping accounts percents and tokens
 - ??remove if __name__ == "__main__" for production??

@@ -24,6 +24,8 @@ services:
         USER_ID: 1000
         APP_STATUS: development
     command: celery -A src.celery.celery_app beat
+    env_file:
+      - ./config/environment_variables/.env
     depends_on:
       - redis
     restart: always

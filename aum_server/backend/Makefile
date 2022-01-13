@@ -9,5 +9,5 @@ full_test_code:
 	safety check --bare --full-report
 
 full_format_code:
-	isort ./
 	black ./
+	isort ./
