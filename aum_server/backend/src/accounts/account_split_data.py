@@ -12,7 +12,7 @@ from src.accounts.constants import NUMBER_OF_ACCOUNTS
 
 
 @lru_cache(maxsize=1)
-def accounts(number_of_accounts=NUMBER_OF_ACCOUNTS) -> List[str]:
+def accounts(number_of_accounts: int = NUMBER_OF_ACCOUNTS) -> List[str]:
     return [f'Account_{index}' for index in range(1, number_of_accounts + 1)]
 
 
