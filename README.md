@@ -6,7 +6,6 @@ TODO:
 
 aum_server:
 - implement httpx for async calls to controller
-- add mypy
 
 controller:
 - add tokens to aum_server
