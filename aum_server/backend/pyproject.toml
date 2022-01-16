@@ -43,6 +43,7 @@ fail_under = 80
 
 [tool.flake8]
 allowed-domain-names="item"
+format = "wemake"
 show-source = "True"
 statistics = "True"
 doctests = "True"
@@ -56,6 +57,7 @@ max-module-members = "10"
 accept-encodings = "utf-8"
 inline-quotes = "single"
 isort-show-traceback = "True"
+multiline-quotes = "'''"
 # C101: Coding magic comment not found
 # W503:  line break before binary operator
 ignore = "C101,W503,"
