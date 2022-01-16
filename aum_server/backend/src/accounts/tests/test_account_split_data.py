@@ -1,25 +1,27 @@
-from src.accounts.account_split_data import AccountsSplitData
+from src.accounts.account_split_data import (
+    AccountsSplitData,
+    accounts,
+)
+
+
+def test_accounts():
+    assert accounts() == [
+        'Account_1',
+        'Account_2',
+        'Account_3',
+        'Account_4',
+        'Account_5',
+        'Account_6',
+        'Account_7',
+        'Account_8',
+        'Account_9',
+        'Account_10',
+    ]
 
 
 class TestAccountsSplitData:
-    def test_accounts(self):
-        assert AccountsSplitData().accounts == [
-            'Account_1',
-            'Account_2',
-            'Account_3',
-            'Account_4',
-            'Account_5',
-            'Account_6',
-            'Account_7',
-            'Account_8',
-            'Account_9',
-            'Account_10',
-        ]
-
     def test_get_random_accounts(self, mocker):
-        mocker_accounts = mocker.patch(
-            'src.accounts.account_split_data.AccountsSplitData.accounts',
-        )
+        mocker_accounts = mocker.patch('src.accounts.account_split_data.accounts')
         mocker_choices = mocker.patch(
             'src.accounts.account_split_data.random.choices',
             return_value=True,
@@ -27,7 +29,7 @@ class TestAccountsSplitData:
         tested_random_number_of_accounts = 1
         assert AccountsSplitData()._get_random_accounts(1)
         mocker_choices.assert_called_once_with(
-            mocker_accounts, k=tested_random_number_of_accounts
+            mocker_accounts(), k=tested_random_number_of_accounts
         )
 
     def test_get_random_splits_percents(self, mocker):

@@ -1,5 +1,6 @@
 import random
 
+from functools import lru_cache
 from typing import (
     Dict,
     List,
@@ -10,13 +11,14 @@ import numpy
 from src.accounts.constants import NUMBER_OF_ACCOUNTS
 
 
-class AccountsSplitData:
-    @property
-    def accounts(self, number_of_accounts=NUMBER_OF_ACCOUNTS) -> List[str]:
-        return [f'Account_{index}' for index in range(1, number_of_accounts + 1)]
+@lru_cache(maxsize=1)
+def accounts(number_of_accounts=NUMBER_OF_ACCOUNTS) -> List[str]:
+    return [f'Account_{index}' for index in range(1, number_of_accounts + 1)]
 
+
+class AccountsSplitData:
     def _get_random_accounts(self, random_number_of_accounts: int) -> List[str]:
-        return random.choices(self.accounts, k=random_number_of_accounts)
+        return random.choices(accounts(), k=random_number_of_accounts)
 
     def _get_random_splits_percents(
         self, random_number_of_accounts: int
