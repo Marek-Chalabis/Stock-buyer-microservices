@@ -1,3 +1,5 @@
+import numpy
+
 from src.accounts.account_split_data import (
     AccountsSplitData,
     accounts,
@@ -29,16 +31,18 @@ class TestAccountsSplitData:
         tested_random_number_of_accounts = 1
         assert AccountsSplitData()._get_random_accounts(1)
         mocker_choices.assert_called_once_with(
-            mocker_accounts(), k=tested_random_number_of_accounts
+            mocker_accounts(),
+            k=tested_random_number_of_accounts,
         )
 
     def test_get_random_splits_percents(self, mocker):
         mocker_ones = mocker.patch(
-            'src.accounts.account_split_data.numpy.ones', return_value=1
+            'src.accounts.account_split_data.numpy.ones',
+            return_value=1,
         )
         mocker_multinomial = mocker.patch(
             'src.accounts.account_split_data.numpy.random.multinomial',
-            return_value=[1],
+            return_value=numpy.array([1]),
         )
         assert AccountsSplitData()._get_random_splits_percents(1) == 1
         mocker_ones.assert_called_with(1)
