@@ -31,3 +31,8 @@ services:
     restart: always
   redis:
     image: redis:6.2-alpine
+
+networks:
+  default:
+    external:
+      name: stock_buyer_network
