@@ -11,4 +11,4 @@ async def splits_accounts(
         accounts_split_data: AccountsSplits,
 ) -> None:
     """Saves Accounts trade split."""
-    r.hmset('accounts_split_data', accounts_split_data.json())
+    r.hmset('accounts_split_data', accounts_split_data.dict())
