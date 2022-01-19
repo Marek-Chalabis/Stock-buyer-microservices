@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 from src.redis import r
 
-from controller_server.backend.src.schemas import AccountsSplits
+from src.schemas import AccountsSplits
 
 router = APIRouter()
 
