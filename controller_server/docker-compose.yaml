@@ -18,27 +18,24 @@ services:
     depends_on:
       - redis
     networks:
-      # for inner network
-      default: { }
-      # name for external network
+      deployml_network:
       stock_buyer_network:
         aliases:
           - controller-server
   redis:
-    image: redis:6.2
+    image: redis:6.2-alpine
     env_file:
       - ./config/environment_variables/.env
-    command: redis-server --save 30 1 --requirepass "${REDIS_PASSWORD}"
-    restart: always
-    ports:
-      - 6380:6379
+    command: redis-server --save 30 1
     volumes:
       - redis_db:/data
+    networks:
+      - deployml_network
 
 volumes:
   redis_db:
 
 networks:
-  default: {}
   stock_buyer_network:
     external: true
+  deployml_network:
