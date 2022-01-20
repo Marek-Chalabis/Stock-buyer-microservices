@@ -17,7 +17,6 @@ def accounts(number_of_accounts: int = NUMBER_OF_ACCOUNTS) -> List[str]:
 
 
 class AccountsSplitData:
-
     def get_random_account_split_data(self) -> Dict[str, float]:
         """X number of accounts with split percentage summed to 100."""
         random_number_of_accounts = random.randint(1, NUMBER_OF_ACCOUNTS)  # noqa: S311
