@@ -1,21 +1,32 @@
 from typing import Dict
 
 from fastapi import APIRouter
-from pydantic import BaseModel, confloat, constr
-from pydantic import Field
+from pydantic import (
+    BaseModel,
+    ConstrainedFloat,
+    ConstrainedStr,
+    Field,
+)
 
 router = APIRouter()
 
-Account = constr(min_length=1, max_length=30)
-Split = confloat(ge=0, le=100)
+
+class Account(ConstrainedStr):
+    min_length = 1
+    max_length = 30
+
+
+class Split(ConstrainedFloat):
+    ge = 0
+    le = 100
 
 
 class AccountsSplits(BaseModel):
     __root__: Dict[Account, Split]
 
-    def dict(self) -> Dict[str, float]:
-        """Returns object in dict form without __root__ key."""
-        dict_with_root = super().dict()
+    def dict(self, *args, **kwargs) -> Dict[str, float]:  # type: ignore
+        """Object in dict form without __root__ key."""
+        dict_with_root = super().dict(*args, **kwargs)
         return dict_with_root['__root__']
 
 

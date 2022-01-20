@@ -2,7 +2,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    API_V1_STR: str = "/api/v1"
+    API_V1_STR: str = '/api/v1'
     REDIS_HOST: str
     X_API_KEY_SECRET: str
 

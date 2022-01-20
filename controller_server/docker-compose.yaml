@@ -18,7 +18,7 @@ services:
     depends_on:
       - redis
     networks:
-      - controller_server_network
+      controller_server_network:
       stock_buyer_network:
         aliases:
           - controller-server

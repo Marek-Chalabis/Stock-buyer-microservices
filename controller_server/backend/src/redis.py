@@ -1,5 +1,5 @@
-import redis
+import redis  # type: ignore
 
 from src.core.config import settings
 
-r = redis.Redis(host=settings.REDIS_HOST)
+redis = redis.Redis(host=settings.REDIS_HOST)
