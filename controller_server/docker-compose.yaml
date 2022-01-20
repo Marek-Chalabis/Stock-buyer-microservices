@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./config/docker/backend/Dockerfile
+      args:
+        USER_ID: 1000
+        APP_STATUS: development
+    command: uvicorn --reload --host 0.0.0.0 --port 8001 src.main:app
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./config/environment_variables/.env
+    ports:
+      - 8001:8001
+    depends_on:
+      - redis
+    networks:
+      controller_server_network:
+      stock_buyer_network:
+        aliases:
+          - controller-server
+  redis:
+    image: redis:6.2-alpine
+    env_file:
+      - ./config/environment_variables/.env
+    command: redis-server --save 30 1
+    volumes:
+      - redis_db:/data
+    networks:
+      - controller_server_network
+
+volumes:
+  redis_db:
+
+networks:
+  controller_server_network:
+  stock_buyer_network:
+    external: true

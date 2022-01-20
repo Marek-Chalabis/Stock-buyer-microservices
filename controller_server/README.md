@@ -1,5 +1,5 @@
-# AUM server
-> Microservice responsible for splitting trade shares.
+# Controller server
+> Microservice responsible for creating trade fills from gathered data and sending them to position server.
 
 ## Table of contents
 
@@ -11,10 +11,9 @@
 - [Contact](#contact)
 
 ## General info
-Creates a random number of accounts with random percent splits between 
-them that sum to 100%. 
-
-Sends this data to the controller in intervals.
+The controller is keeping track of positions held by each account got from the aum server
+When new fill come in it divides the stocks so that each account has an overall position 
+that matches the split from aum server, then sends this data to the position server in intervals.
 
 ## Setup
 
@@ -52,6 +51,7 @@ You can check this by
 
 - Python 
 - Redis
+- FastAPI
 - Celery
 - [Python packages](backend/pyproject.toml)
 

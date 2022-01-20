@@ -1,16 +1,19 @@
 # Stock-buyer-microservices
 
-WIP -> currently on controller_server
+WIP -> controller_server
+WIP -> fill_server
+Not started -> position_server
+
 
 TODO:
-
-aum_server:
-- implement httpx for async calls to controller
-
 controller:
-- add tokens to aum_server
-- add to code -> @validate_arguments
-- add DB (redis probably) for keeping accounts percents and tokens
-- ??remove if __name__ == "__main__" for production??
-- create trade_share network
-- add flower to monitor fastapi
+- handle fill
+- send data to position server
+- add flower to monitor fastapi or logger 
+- Add CORS
+- split config production/develop
+
+Create a network to allow microservices to communicate
+```
+    docker network create stock_buyer_network
+```
