@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./config/docker/backend/Dockerfile
+      args:
+        USER_ID: 1000
+        APP_STATUS: development
+    command: celery -A src.celery.celery_app worker
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./config/environment_variables/.env
+    restart: always
+    depends_on:
+      - redis
+  redis:
+    image: redis:6.2-alpine
+
+networks:
+  default:
+    external:
+      name: stock_buyer_network
