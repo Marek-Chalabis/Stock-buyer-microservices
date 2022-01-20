@@ -1,9 +1,11 @@
 from fastapi import status
 from fastapi.testclient import TestClient
-
+from src.api.api_v1.api import authorizer
 from src.main import app
 
 client = TestClient(app)
+
+app.dependency_overrides[authorizer] = lambda: None
 
 
 def test_splits_accounts(mocker):
