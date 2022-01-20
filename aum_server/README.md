@@ -5,7 +5,6 @@
 
 - [General info](#general-info)
 - [Setup](#setup) 
-- [Authorization](#authorization) TODO
 - [Tests](#tests)
 - [Code format](#code-format)
 - [Technologies](#technologies)
@@ -37,8 +36,6 @@ You can check this by
 ```
     docker-compose up
 ```
-
-## Authorization
 
 ## Tests
 ```
