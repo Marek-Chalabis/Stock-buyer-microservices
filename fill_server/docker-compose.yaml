@@ -16,10 +16,15 @@ services:
     restart: always
     depends_on:
       - redis
+    networks:
+      - fill_server_network
+
   redis:
     image: redis:6.2-alpine
+    networks:
+      - fill_server_network
 
 networks:
-  default:
-    external:
-      name: stock_buyer_network
+  fill_server_network:
+  stock_buyer_network:
+    external: true
