@@ -5,7 +5,7 @@ from typing import (
     Union,
 )
 
-from src.fills.constants import (
+from src.constants import (
     MAX_TRADE_TICKER_PRICE,
     MAX_TRADE_TICKER_QUANTITY,
     MIN_TRADE_TICKER_PRICE,
