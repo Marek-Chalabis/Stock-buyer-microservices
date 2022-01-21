@@ -16,6 +16,10 @@ services:
     depends_on:
       - celerybeat
     restart: always
+    networks:
+      - aum_server_network
+      - stock_buyer_network
+
   celerybeat:
     build:
       context: .
@@ -29,10 +33,15 @@ services:
     depends_on:
       - redis
     restart: always
+    networks:
+      - aum_server_network
+
   redis:
     image: redis:6.2-alpine
+    networks:
+      - aum_server_network
 
 networks:
-  default:
-    external:
-      name: stock_buyer_network
+  aum_server_network:
+  stock_buyer_network:
+    external: true
