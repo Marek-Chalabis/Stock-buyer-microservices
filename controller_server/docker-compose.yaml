@@ -13,8 +13,6 @@ services:
       - ./backend:/app
     env_file:
       - ./config/environment_variables/.env
-    ports:
-      - 8001:8001
     depends_on:
       - redis
     networks:
@@ -22,6 +20,7 @@ services:
       stock_buyer_network:
         aliases:
           - controller-server
+
   redis:
     image: redis:6.2-alpine
     env_file:

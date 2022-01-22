@@ -13,35 +13,18 @@ services:
       - ./backend:/app
     env_file:
       - ./config/environment_variables/.env
-    depends_on:
-      - celerybeat
     restart: always
-    networks:
-      - aum_server_network
-      - stock_buyer_network
-
-  celerybeat:
-    build:
-      context: .
-      dockerfile: ./config/docker/backend/Dockerfile
-      args:
-        USER_ID: 1000
-        APP_STATUS: development
-    command: celery -A src.celery.celery_app beat
-    env_file:
-      - ./config/environment_variables/.env
     depends_on:
       - redis
-    restart: always
     networks:
-      - aum_server_network
+      - fill_server_network
 
   redis:
     image: redis:6.2-alpine
     networks:
-      - aum_server_network
+      - fill_server_network
 
 networks:
-  aum_server_network:
+  fill_server_network:
   stock_buyer_network:
     external: true
