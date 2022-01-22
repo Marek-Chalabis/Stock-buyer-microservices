@@ -10,7 +10,7 @@ api_router_v1 = APIRouter()
 authorizer = AuthorizerDependencyByXApiKey()
 api_router_v1.include_router(
     account_split.router,
-    prefix='/account-split',
-    tags=['account-split'],
+    prefix='/accounts-splits',
+    tags=['accounts-splits'],
     dependencies=[Depends(authorizer)],
 )
