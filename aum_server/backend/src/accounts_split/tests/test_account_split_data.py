@@ -23,7 +23,7 @@ def test_get_accounts():
 
 class TestAccountsSplitData:
     def test_get_random_accounts(self, mocker):
-        mocker_accounts = mocker.patch('src.accounts_split.accounts.get_accounts')
+        mocker_get_accounts = mocker.patch('src.accounts_split.accounts.get_accounts')
         mocker_choices = mocker.patch(
             'src.accounts_split.accounts.random.choices',
             return_value=True,
@@ -31,7 +31,7 @@ class TestAccountsSplitData:
         tested_random_number_of_accounts = 1
         assert AccountsSplits()._get_random_accounts(1)
         mocker_choices.assert_called_once_with(
-            mocker_accounts(),
+            mocker_get_accounts(),
             k=tested_random_number_of_accounts,
         )
 
