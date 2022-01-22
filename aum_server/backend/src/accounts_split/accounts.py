@@ -8,16 +8,18 @@ from typing import (
 
 import numpy
 
-from src.accounts.constants import NUMBER_OF_ACCOUNTS
+from src.accounts_split.constants import NUMBER_OF_ACCOUNTS
 
 
-@lru_cache(maxsize=1)
-def accounts(number_of_accounts: int = NUMBER_OF_ACCOUNTS) -> List[str]:
+@lru_cache
+def get_accounts(number_of_accounts: int = NUMBER_OF_ACCOUNTS) -> List[str]:
     return [f'Account_{index}' for index in range(1, number_of_accounts + 1)]
 
 
-class AccountsSplitData:
-    def get_random_account_split_data(self) -> Dict[str, float]:
+class AccountsSplits:
+    """Divides accounts into random splits."""
+
+    def get_random_accounts_splits(self) -> Dict[str, float]:
         """X number of accounts with split percentage summed to 100."""
         random_number_of_accounts = random.randint(1, NUMBER_OF_ACCOUNTS)  # noqa: S311
         random_accounts = self._get_random_accounts(
@@ -29,7 +31,7 @@ class AccountsSplitData:
         return dict(zip(random_accounts, random_splits))
 
     def _get_random_accounts(self, random_number_of_accounts: int) -> List[str]:
-        return random.choices(accounts(), k=random_number_of_accounts)  # noqa: S311
+        return random.choices(get_accounts(), k=random_number_of_accounts)  # noqa: S311
 
     def _get_random_splits_percents(
         self,

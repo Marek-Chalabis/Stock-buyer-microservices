@@ -1,13 +1,13 @@
 import numpy
 
-from src.accounts.account_split_data import (
-    AccountsSplitData,
-    accounts,
+from src.accounts_split.accounts import (
+    AccountsSplits,
+    get_accounts,
 )
 
 
-def test_accounts():
-    assert accounts() == [
+def test_get_accounts():
+    assert get_accounts() == [
         'Account_1',
         'Account_2',
         'Account_3',
@@ -23,13 +23,13 @@ def test_accounts():
 
 class TestAccountsSplitData:
     def test_get_random_accounts(self, mocker):
-        mocker_accounts = mocker.patch('src.accounts.account_split_data.accounts')
+        mocker_accounts = mocker.patch('src.accounts_split.accounts.get_accounts')
         mocker_choices = mocker.patch(
-            'src.accounts.account_split_data.random.choices',
+            'src.accounts_split.accounts.random.choices',
             return_value=True,
         )
         tested_random_number_of_accounts = 1
-        assert AccountsSplitData()._get_random_accounts(1)
+        assert AccountsSplits()._get_random_accounts(1)
         mocker_choices.assert_called_once_with(
             mocker_accounts(),
             k=tested_random_number_of_accounts,
@@ -37,25 +37,24 @@ class TestAccountsSplitData:
 
     def test_get_random_splits_percents(self, mocker):
         mocker_ones = mocker.patch(
-            'src.accounts.account_split_data.numpy.ones',
+            'src.accounts_split.accounts.numpy.ones',
             return_value=1,
         )
         mocker_multinomial = mocker.patch(
-            'src.accounts.account_split_data.numpy.random.multinomial',
+            'src.accounts_split.accounts.numpy.random.multinomial',
             return_value=numpy.array([1]),
         )
-        assert AccountsSplitData()._get_random_splits_percents(1) == 1
+        assert AccountsSplits()._get_random_splits_percents(1) == 1
         mocker_ones.assert_called_with(1)
         mocker_multinomial.assert_called_once_with(n=100, pvals=1.0, size=1)
 
-    def test_get_random_account_split_data(self, mocker):
+    def test_get_random_accounts_splits(self, mocker):
         mocker.patch(
-            'src.accounts.account_split_data.AccountsSplitData._get_random_accounts',
+            'src.accounts_split.accounts.AccountsSplits._get_random_accounts',
             return_value=['a', 'b'],
         )
         mocker.patch(
-            'src.accounts.account_split_data.AccountsSplitData.'
-            + '_get_random_splits_percents',
+            'src.accounts_split.accounts.AccountsSplits._get_random_splits_percents',
             return_value=[1, 2],
         )
-        assert AccountsSplitData().get_random_account_split_data() == {'a': 1, 'b': 2}
+        assert AccountsSplits().get_random_accounts_splits() == {'a': 1, 'b': 2}
