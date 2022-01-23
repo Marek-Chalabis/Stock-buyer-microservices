@@ -10,7 +10,7 @@ app.dependency_overrides[authorizer] = lambda: None
 
 
 def test_splits_accounts(mocker):
-    mocker_hmset = mocker.patch('src.api.api_v1.endpoints.account_split.redis.hmset')
-    response = client.post('/api/v1/account-split/', json={'test': 1})
+    mocker_set = mocker.patch('src.api.api_v1.endpoints.account_split.redis.set')
+    response = client.post('/api/v1/accounts-splits/', json={'test': 1})
     assert response.status_code == status.HTTP_202_ACCEPTED
-    mocker_hmset.assert_called_once_with('accounts_split_data', {'test': 1.0})
+    mocker_set.assert_called_once_with('accounts_splits', '{"test": 1.0}')

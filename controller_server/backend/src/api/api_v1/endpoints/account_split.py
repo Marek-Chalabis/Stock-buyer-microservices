@@ -1,3 +1,5 @@
+from typing import Dict
+
 from fastapi import (
     APIRouter,
     status,
@@ -11,7 +13,8 @@ router = APIRouter()
 
 @router.post('/', status_code=status.HTTP_202_ACCEPTED)
 async def splits_accounts(
-    accounts_split_data: AccountsSplits,
-) -> None:
+    accounts_splits: AccountsSplits,
+) -> Dict[str, str]:
     """Set Accounts trade split."""
-    redis.hmset('accounts_split_data', accounts_split_data.dict())
+    redis.set('accounts_splits', accounts_splits.json())
+    return {'message': 'Split account accepted'}
