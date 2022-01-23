@@ -24,7 +24,7 @@ logger.setLevel('ERROR')
 @celery_app.task
 def send_trade_fill_to_controller() -> None:
     trade_fill = get_random_fill()
-    endpoint = settings.CONTROLLER_SERVER_CLIENT['fills']
+    endpoint = settings.CONTROLLER_SERVER_CLIENT['trade-fills']
     response = httpx.post(
         endpoint,
         json=trade_fill,
