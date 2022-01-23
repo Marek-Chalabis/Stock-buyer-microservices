@@ -18,6 +18,7 @@ services:
       - redis
     networks:
       - fill_server_network
+      - stock_buyer_network
 
   redis:
     image: redis:6.2-alpine

@@ -31,6 +31,6 @@ class AccountsSplits(BaseModel):
 
 
 class TradeFill(BaseModel):
-    stock_name: str = Field(min_length=1, max_length=30)
+    stock_ticker: str = Field(min_length=1, max_length=30)
     price: float = Field(gt=0)
     quantity: int = Field(gt=0)
