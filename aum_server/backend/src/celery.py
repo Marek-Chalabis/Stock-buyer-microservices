@@ -6,7 +6,7 @@ from src.constants import INTERVAL_FOR_SENDING_DATA_TO_CONTROLLER_SEC
 celery_app = Celery(
     'celery',
     broker=settings.CELERY_BROKER_URL,
-    include=['src.periodic_tasks.tasks'],
+    include=['src.accounts_split.tasks'],
 )
 
 logger = get_task_logger(__name__)

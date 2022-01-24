@@ -11,7 +11,7 @@ def test_send_trade_fill_to_controller_fill_call(mocker):
 def test_send_trade_fill_to_controller_request(mocker):
     mocker_setting = mocker.patch('src.celery.settings')
     mocker_setting.CONTROLLER_SERVER_KEY_SECRET = 'test_secret'
-    mocker_setting.CONTROLLER_SERVER_CLIENT = {'fills': 'test_url'}
+    mocker_setting.CONTROLLER_SERVER_CLIENT = {'trade-fills': 'test_url'}
     mocker.patch('src.celery.get_random_fill', return_value={'test': 'test'})
     mocker_post = mocker.patch('src.celery.httpx.post')
     send_trade_fill_to_controller()

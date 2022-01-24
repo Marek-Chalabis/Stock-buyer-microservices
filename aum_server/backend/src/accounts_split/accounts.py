@@ -31,7 +31,7 @@ class AccountsSplits:
         return dict(zip(random_accounts, random_splits))
 
     def _get_random_accounts(self, random_number_of_accounts: int) -> List[str]:
-        return random.choices(get_accounts(), k=random_number_of_accounts)  # noqa: S311
+        return random.sample(get_accounts(), random_number_of_accounts)  # noqa: S311
 
     def _get_random_splits_percents(
         self,
