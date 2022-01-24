@@ -100,7 +100,7 @@ ignore = [
 ]
 exclude = ".git,"
 per-file-ignores = """
-  */test*.py: S101, S106, WPS214, WPS226, WPS437
+  */test*.py: S101, S106, WPS214, WPS226, WPS317, WPS437
   ./conftest.py: WPS411
   ./src/core/config.py: WPS115, WPS431
 """

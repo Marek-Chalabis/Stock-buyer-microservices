@@ -23,12 +23,13 @@ class TestStockPurchaseOrder:
 
     def test_prepare_stock_purchase_order(self, mocker, stock_purchase_order):
         mocker.patch(
-            'src.orders.stock_order.StockPurchaseOrder._get_divided_stock_purchase_order',
+            'src.orders.stock_order.StockPurchaseOrder.'
+            + '_get_divided_stock_purchase_order',
             return_value='tested_order',
         )
         assert stock_purchase_order.prepare_stock_purchase_order() == {
             'order': 'tested_order',
-            'stock_ticker_price': 100.0,
+            'price': 100.0,
         }
 
     @pytest.mark.parametrize(
@@ -98,10 +99,11 @@ class TestStockPurchaseOrder:
             return_value=tested_accounts_splits,
         )
         mocker_add_missing_quantity_from_trade_fill = mocker.patch(
-            'src.orders.stock_order.StockPurchaseOrder._add_missing_quantity_from_trade_fill'
+            'src.orders.stock_order.StockPurchaseOrder.'
+            + '_add_missing_quantity_from_trade_fill',
         )
         mocker_sort_split = mocker.patch(
-            'src.orders.stock_order.StockPurchaseOrder._sort_split'
+            'src.orders.stock_order.StockPurchaseOrder._sort_split',
         )
         tested_divided_stock_purchase_order = StockPurchaseOrder(
             trade_fill=TradeFill(
@@ -121,7 +123,7 @@ class TestStockPurchaseOrder:
                 'test_account_1': 1,
                 'test_account_2': 3,
                 'test_account_3': 2,
-            }
+            },
         )
         assert list(tested_order.items()) == [
             ('test_account_2', 3),
@@ -170,7 +172,7 @@ class TestStockPurchaseOrder:
         stock_purchase_order.trade_fill.quantity = tested_quantity
         assert (
             stock_purchase_order._add_missing_quantity_from_trade_fill(
-                split=tested_split
+                split=tested_split,
             )
             == expected_result
         )

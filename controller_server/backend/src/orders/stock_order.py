@@ -2,15 +2,14 @@ import json
 
 from typing import (
     Dict,
-    List,
     Union,
 )
 
 from src.api.schemas import TradeFill
 from src.redis import redis
 
-Split = Dict[str, float]
-Order = Dict[str, Union[float, List[Split]]]
+Split = Dict[str, int]
+Order = Dict[str, Union[float, Split]]
 
 
 class StockPurchaseOrder:
@@ -18,12 +17,12 @@ class StockPurchaseOrder:
         self.trade_fill = trade_fill
 
     @property
-    def accounts_splits(self) -> Dict[str, Union[str, float]]:
+    def accounts_splits(self) -> Dict[str, float]:
         return json.loads(redis.get('accounts_splits'))
 
     def prepare_stock_purchase_order(self) -> Order:
         return {
-            'stock_ticker_price': self.trade_fill.price,
+            'price': self.trade_fill.price,
             'order': self._get_divided_stock_purchase_order(),
         }
 
@@ -37,7 +36,7 @@ class StockPurchaseOrder:
         return self._add_missing_quantity_from_trade_fill(split=sorted_split)
 
     def _sort_split(self, split: Split) -> Split:
-        """Order split by quantity"""
+        """Order split by quantity."""
         return {
             account: quantity
             for account, quantity in sorted(

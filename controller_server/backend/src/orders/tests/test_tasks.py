@@ -1,7 +1,7 @@
 from src.orders.tasks import send_stock_purchase_order_to_reporter
 
 
-def test_send_stock_purchase_order_to_reporter_order(mocker):
+def test_send_stock_prepare_order(mocker):
     tested_trade_fill = {'test': 1}
     mocker_get_random_accounts_splits_data = mocker.patch(
         'src.orders.tasks.StockPurchaseOrder.prepare_stock_purchase_order',
@@ -11,7 +11,7 @@ def test_send_stock_purchase_order_to_reporter_order(mocker):
     mocker_get_random_accounts_splits_data.assert_called_once_with()
 
 
-def test_send_stock_purchase_order_to_reporter_post(mocker):
+def test_send_stock_post(mocker):
     mocker_setting = mocker.patch('src.orders.tasks.settings')
     mocker_setting.REPORTER_SERVER_KEY_SECRET = 'test_secret'
     mocker_setting.reporter_server_client = {'stocks-purchase-orders': 'test_url'}
