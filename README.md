@@ -34,7 +34,7 @@ purchase order from gathered data and sending them to position server
     [Aum server](aum_server/config/environment_variables/.env),
     [Fill server](fill_server/config/environment_variables/.env),
     [Controller server](controller_server/config/environment_variables/.env),
-    [Reporter](reporter/config/environment_variables/.env),
+    [Reporter](reporter/config/environment_variables/.env)
 ] or run with default ones
 
 3 Create a network to allow microservices/app to communicate
