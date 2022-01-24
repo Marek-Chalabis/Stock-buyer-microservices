@@ -1,5 +1,5 @@
 # Controller server
-> Microservice responsible for creating trade fills from gathered data and sending them to position server.
+> Microservice responsible for creating trade fills from gathered data and sending them to reporter.
 
 ## Table of contents
 
@@ -13,7 +13,7 @@
 ## General info
 The controller is keeping track of positions held by each account got from the aum server
 When new fill come in it divides the stocks so that each account has an overall position 
-that matches the split from aum server, then sends this data to the position server in intervals.
+that matches the split from aum server, then sends this data to reporter.
 
 ## Setup
 
@@ -52,7 +52,6 @@ You can check this by
 - Python 
 - Redis
 - FastAPI
-- Celery
 - [Python packages](backend/pyproject.toml)
 
 
