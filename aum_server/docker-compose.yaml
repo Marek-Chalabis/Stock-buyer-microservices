@@ -15,7 +15,6 @@ services:
       - ./config/environment_variables/.env
     depends_on:
       - celerybeat
-    restart: always
     networks:
       - aum_server_network
       - stock_buyer_network
@@ -32,7 +31,6 @@ services:
       - ./config/environment_variables/.env
     depends_on:
       - redis
-    restart: always
     networks:
       - aum_server_network
 

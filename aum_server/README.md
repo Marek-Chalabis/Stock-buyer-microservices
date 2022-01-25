@@ -22,7 +22,8 @@ Sends this data to the controller in intervals.
 
 2 Adjust environment variables in [.env](config/environment_variables/.env)
 
-3 Change USER_ID arg in [docker-compose.yaml](docker-compose.yaml) if your local UID is different then 1000, this will fix local file permissions.
+3 Change USER_ID arg in [docker-compose.yaml](docker-compose.yaml) 
+if your local UID is different then 1000, this will fix local file permissions.
 
 You can check this by
 ```

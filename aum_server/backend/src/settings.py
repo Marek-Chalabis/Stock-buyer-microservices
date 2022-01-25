@@ -2,6 +2,8 @@ from types import MappingProxyType
 
 from environs import Env
 
+from celery.utils.log import get_task_logger
+
 env: Env = Env()
 Env.read_env()
 
@@ -13,3 +15,4 @@ CONTROLLER_SERVER_CLIENT = MappingProxyType(
         'accounts-splits': f'{CONTROLLER_SERVER_API_V1_URL}/accounts-splits/',
     },
 )
+logger = get_task_logger(__name__)
