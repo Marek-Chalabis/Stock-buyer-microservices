@@ -17,5 +17,6 @@ async def trade_fills(
     trade_fill: TradeFill,
     background_tasks: BackgroundTasks,
 ) -> Dict[str, str]:
+    """Sends trade fill to a method that will process it and sends it to a reporter."""
     background_tasks.add_task(send_stock_purchase_order_to_reporter, trade_fill)
     return {'message': 'Trade fill accepted'}

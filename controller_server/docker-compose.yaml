@@ -20,6 +20,8 @@ services:
       stock_buyer_network:
         aliases:
           - controller-server
+    ports:
+    - 8001:8001
 
   redis:
     image: redis:6.2-alpine
