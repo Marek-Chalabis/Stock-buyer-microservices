@@ -4,7 +4,6 @@ import time
 import httpx
 
 from celery import Celery
-from celery.utils.log import get_task_logger
 from src import settings
 from src.constants import (
     MAX_SEND_TRADE_FILL_INTERVAL,
@@ -17,9 +16,6 @@ celery_app = Celery(
     broker=settings.CELERY_BROKER_URL,
 )
 
-logger = get_task_logger(__name__)
-logger.setLevel('ERROR')
-
 
 @celery_app.task
 def send_trade_fill_to_controller() -> None:
@@ -31,7 +27,7 @@ def send_trade_fill_to_controller() -> None:
         headers={'x-api-key': settings.CONTROLLER_SERVER_KEY_SECRET},
     )
     if response.status_code != httpx.codes.ACCEPTED:
-        logger.error(
+        settings.logger.error(
             'Request to url: "{0}" not accepted with data:\n{1}'.format(
                 endpoint,
                 trade_fill,

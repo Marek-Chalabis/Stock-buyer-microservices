@@ -11,7 +11,8 @@
 - [Contact](#contact)
 
 ## General info
-Creates a random trade fill with stock ticker name, quantity, price, then sends this data to the controller in intervals.
+Creates a random trade fill with stock ticker name, quantity, price, then sends this 
+data to the controller in intervals.
 
 ## Setup
 
@@ -19,7 +20,8 @@ Creates a random trade fill with stock ticker name, quantity, price, then sends 
 
 2 Adjust environment variables in [.env](config/environment_variables/.env)
 
-3 Change USER_ID arg in [docker-compose.yaml](docker-compose.yaml) if your local UID is different then 1000, this will fix local file permissions.
+3 Change USER_ID arg in [docker-compose.yaml](docker-compose.yaml) if your local UID 
+is different then 1000, this will fix local file permissions.
 
 You can check this by
 ```

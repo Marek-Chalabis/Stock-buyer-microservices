@@ -17,7 +17,7 @@ TRADE_FILL = Dict[str, Union[str, float]]
 
 
 def get_random_fill() -> TRADE_FILL:
-    """Radnom trade fill with random quantity and price."""
+    """Random trade fill with random quantity and price."""
     random_trade_ticker = random.choice(STOCK_TICKERS)  # noqa: S311
     random_quantity = random.randint(  # noqa: S311
         MIN_TRADE_TICKER_QUANTITY,

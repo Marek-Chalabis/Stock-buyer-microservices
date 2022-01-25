@@ -13,7 +13,6 @@ services:
       - ./backend:/app
     env_file:
       - ./config/environment_variables/.env
-    restart: always
     depends_on:
       - redis
     networks:

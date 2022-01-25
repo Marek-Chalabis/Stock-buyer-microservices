@@ -70,15 +70,7 @@ purchase order from gathered data and sending them to position server
 Created by <b>Marek Chałabis</b> email: chalabismarek@gmail.com
 
 ## TODO
-aum server:
-- add link to api documentation
-- adjust/fix logger
-
 controller:
 - add link to api documentation
 - adjust/fix logger
 - Add CORS
-
-fill server:
-- add link to api documentation
-- adjust/fix logger
