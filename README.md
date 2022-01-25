@@ -70,7 +70,6 @@ purchase order from gathered data and sending them to position server
 Created by <b>Marek Chałabis</b> email: chalabismarek@gmail.com
 
 ## TODO
-controller:
-- add link to api documentation
-- adjust/fix logger
-- Add CORS
+- Prepare docker commands for develop mode
+reporter:
+- endpoint for controller request

@@ -98,11 +98,10 @@ ignore = [
     # W503:  line break before binary operator
     "W503",
 ]
-exclude = ".git,"
+exclude = ".git, ./src/core/*.py"
 per-file-ignores = """
   */test*.py: S101, S106, WPS214, WPS226, WPS317, WPS437
   ./conftest.py: WPS411
-  ./src/core/config.py: WPS115, WPS431
 """
 
 [tool.mypy]

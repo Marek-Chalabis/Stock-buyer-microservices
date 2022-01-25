@@ -6,6 +6,7 @@ from fastapi import (
 )
 
 from src.api.schemas import AccountsSplits
+from src.core.logger import logger
 from src.redis import redis
 
 router = APIRouter()
@@ -17,4 +18,5 @@ async def splits_accounts(
 ) -> Dict[str, str]:
     """Set Accounts trade split."""
     redis.set('accounts_splits', accounts_splits.json())
+    logger.info('Received account split: {0}'.format(accounts_splits))
     return {'message': 'Split account accepted'}
