@@ -17,4 +17,3 @@ CONTROLLER_SERVER_CLIENT = MappingProxyType(
 )
 
 logger = get_task_logger(__name__)
-logger.setLevel('ERROR')
