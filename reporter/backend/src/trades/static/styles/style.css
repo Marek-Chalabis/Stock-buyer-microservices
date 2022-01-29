@@ -15,3 +15,7 @@ body {
     color: lawngreen;
     font-weight: bold
 }
+
+label {
+    margin-top: 3px;
+}
