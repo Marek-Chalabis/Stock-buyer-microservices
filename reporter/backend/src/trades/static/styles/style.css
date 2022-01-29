@@ -1,0 +1,17 @@
+body {
+    background-color: #212121;
+    color: aliceblue;
+}
+
+.first-level-table-row {
+    background-color: #485D60;
+}
+
+.second-level-table-row {
+    background-color: #727E7A;
+}
+
+.money-info {
+    color: lawngreen;
+    font-weight: bold
+}
