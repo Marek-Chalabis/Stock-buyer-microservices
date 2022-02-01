@@ -1,8 +1,9 @@
 import pytest
-from app import create_app
-from app import db as _db
+
 from flask import Flask
 
+from app import create_app
+from app import db as _db
 from config import FlaskConfigTesting
 
 

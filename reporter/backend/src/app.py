@@ -8,7 +8,7 @@ from config import FlaskConfig
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-login_manager.login_view = 'login_page'
+login_manager.login_view = 'users.login_page'
 login_manager.login_message_category = 'info'
 
 
@@ -19,7 +19,10 @@ def create_app(config: type[FlaskConfig] = FlaskConfig) -> Flask:
     bcrypt.init_app(app=app)
     login_manager.init_app(app=app)
 
+    from trades import trades
     from users import users
+
     app.register_blueprint(users)
+    app.register_blueprint(trades)
 
     return app
