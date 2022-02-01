@@ -30,9 +30,7 @@ class TestRegisterView:
 
     def test_handle_incorrect_form_validation_errors(self, mocker):
         mocker_flash = mocker.patch('users.view.flash')
-
         mocker_register_form = mocker.patch('users.view.RegisterForm')
-
         mocker_register_form.return_value = mocker.Mock(
             errors={
                 'test_error1': ['test_error1'],
@@ -40,7 +38,6 @@ class TestRegisterView:
             },
         )
         RegisterView()._handle_incorrect_form_validation()
-
         mocker_flash.assert_has_calls(
             [
                 call('test_error1', category='danger'),
