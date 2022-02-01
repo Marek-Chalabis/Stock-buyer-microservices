@@ -11,8 +11,10 @@ from flask.views import View
 from flask_login import login_user
 
 from app import db
-from trades.forms import LoginForm
-from users.forms import RegisterForm
+from users.forms import (
+    LoginForm,
+    RegisterForm,
+)
 from users.models import User
 
 

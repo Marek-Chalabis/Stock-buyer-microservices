@@ -52,3 +52,19 @@ class RegisterForm(FlaskForm):
         ).scalar()
         if user_with_email_exists:
             raise ValidationError('Email already exists. Try different email')
+
+
+class LoginForm(FlaskForm):
+    username = wtforms.StringField(
+        label='Username:',
+        validators=[
+            wtforms.validators.DataRequired(),
+        ],
+    )
+    password = wtforms.PasswordField(
+        label='Password:',
+        validators=[
+            wtforms.validators.DataRequired(),
+        ],
+    )
+    submit = wtforms.SubmitField(label='Sign in')
