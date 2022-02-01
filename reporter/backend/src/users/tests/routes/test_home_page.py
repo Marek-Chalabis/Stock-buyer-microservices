@@ -12,8 +12,8 @@ from users.routes import home_page
         '/home',
     ],
 )
-def test_home_page_status(app_client, tested_endpoint):
-    response = app_client.get(tested_endpoint)
+def test_home_page_status(client, tested_endpoint):
+    response = client.get(tested_endpoint)
     assert response.status_code == HTTPStatus.OK
 
 
