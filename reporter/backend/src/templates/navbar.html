@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ url_for('home_page') }}">
+    <a class="navbar-brand" href="{{ url_for('users.home_page') }}">
         Reporter
     </a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             {% if current_user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('trades_page') }}">
+                    <a class="nav-link" href="{{ url_for('trades.trades_page') }}">
                         Trades
                         <span class="sr-only">(current)</span></a>
                 </li>
@@ -30,7 +30,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <img src="" class="rounded-circle z-depth-0" alt="avatar image"
-                                {# TODO adjust this in image format#}
+{#                                 TODO adjust this in image format#}
                              style="width: 40px; height: 40px;">
                         - WIP
                     </a>
@@ -49,19 +49,19 @@
                             </span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url_for('logout_page') }}">
+                        <a class="dropdown-item" href="{{ url_for('users.logout_page') }}">
                             Logout
                         </a>
                     </div>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login_page') }}">
+                    <a class="nav-link" href="{{ url_for('users.login_page') }}">
                         Login
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('register_page') }}">
+                    <a class="nav-link" href="{{ url_for('users.register_page') }}">
                         Register
                     </a>
                 </li>
