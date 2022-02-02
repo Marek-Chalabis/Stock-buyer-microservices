@@ -1,0 +1,53 @@
+# TODO adjust network for microservices
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./config/docker/backend/Dockerfile
+      args:
+        USER_ID: 1000
+        APP_STATUS: development
+    command: python src/run.py
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./config/environment_variables/.env
+#    networks:
+#      reporter_network:
+#      stock_buyer_network:
+#        aliases:
+#          - reporter
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+      - db_test
+  db:
+    image: postgres:14.1
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./config/environment_variables/.env
+#    networks:
+#      reporter_network:
+  # TODO remove this on prod env
+  db_test:
+    image: postgres:14.1
+    environment:
+      - POSTGRES_USER=db_test
+      - POSTGRES_PASSWORD=db_test
+      - POSTGRES_DB=db_test
+    # TODO remove after setting up commands
+    command: postgres  -c log_statement=all
+#    networks:
+#      reporter_network:
+
+volumes:
+  postgres_data:
+#
+#networks:
+#  reporter_network:
+##  stock_buyer_network:
+##    external: true
