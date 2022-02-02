@@ -17,3 +17,16 @@ class FlaskConfig:
     FLASK_ENV: str = env('FLASK_ENV')
     CSRF_ENABLED: bool = env('CSRF_ENABLED')
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = env('SQLALCHEMY_TRACK_MODIFICATIONS')
+
+
+class FlaskConfigTesting(FlaskConfig):
+    TESTING = True
+    BCRYPT_LOG_ROUNDS = 4
+    CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = (
+        f'postgresql://db_test:'
+        + f'db_test@'
+        + f'db_test:'
+        + f'5432/'
+        + f'db_test'
+    )
