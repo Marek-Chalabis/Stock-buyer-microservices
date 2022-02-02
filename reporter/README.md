@@ -27,14 +27,13 @@ Medium tasks:
 - Security: microservices <-> reporter  (security key?)
 - Add action to add money in navbar
 - Cache trades view
+- Cache trade info 
 - Split commands by blueprint
 - Add graph to documentation how system works
 
 Small tasks:
 
 - Verify how money field is presented on navbar for: large numbers, negative numbers
-
-- Remove pycache in containers
 
 # Controller server
 > Microservice responsible for creating stock purchase order from gathered data and sending them to reporter.
@@ -116,4 +115,6 @@ from app import db; db.drop_all(); db.create_all(); db.session.commit()
 
 ## Contact
 
-Created by <b>Marek Chałabis</b> email: chalabismarek@gmail.com
+Created by <b>Marek Chałabis</b> 
+
+email: chalabismarek@gmail.com
