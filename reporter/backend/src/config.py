@@ -23,10 +23,4 @@ class FlaskConfigTesting(FlaskConfig):
     TESTING = True
     BCRYPT_LOG_ROUNDS = 4
     CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = (
-        f'postgresql://db_test:'
-        + f'db_test@'
-        + f'db_test:'
-        + f'5432/'
-        + f'db_test'
-    )
+    SQLALCHEMY_DATABASE_URI = f'postgresql://db_test:db_test@db_test:5432/db_test'
