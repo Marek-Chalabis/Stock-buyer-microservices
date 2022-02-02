@@ -1,0 +1,37 @@
+{% extends '../../templates/base.html' %}
+{% block title %}
+    Trades
+{% endblock %}
+{% block content %}
+    <h1>Trade Shares</h1>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Stock ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr class="first-level-table-row center center-block">
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.name }}</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.price }}</td>
+                <td class="price-difference">{{ stock.get_percent_price_difference_penultimate() }}% TODO</td>
+                <td>
+                    <button class="btn btn-outline btn-info">
+                        Details TODO
+                    </button>
+                    <button class="btn btn-outline btn-success ml-2">
+                        Purchase TODO
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

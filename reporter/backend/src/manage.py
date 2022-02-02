@@ -5,11 +5,11 @@ import httpx
 
 from flask.cli import FlaskGroup
 
-from app import db
+from app import db, create_app
 from config import FlaskConfig
-from run import app
 from users.models import User
 
+app = create_app()
 cli = FlaskGroup(app)
 
 

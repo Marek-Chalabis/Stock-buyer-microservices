@@ -8,12 +8,12 @@ services:
       dockerfile: ./config/docker/backend/Dockerfile
       args:
         USER_ID: 1000
-        APP_STATUS: development
-    command: python src/run.py
+        APP_STATUS: development # Unify with entrypoint
+    command: python src/manage.py run -h 0.0.0.0
     volumes:
       - ./backend:/app
     env_file:
-      - ./config/environment_variables/.env
+      - ./config/environment_variables/.env.dev
 #    networks:
 #      reporter_network:
 #      stock_buyer_network:
@@ -29,7 +29,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./config/environment_variables/.env
+      - ./config/environment_variables/.env.dev
 #    networks:
 #      reporter_network:
   # TODO remove this on prod env
@@ -39,8 +39,6 @@ services:
       - POSTGRES_USER=db_test
       - POSTGRES_PASSWORD=db_test
       - POSTGRES_DB=db_test
-    # TODO remove after setting up commands
-    command: postgres  -c log_statement=all
 #    networks:
 #      reporter_network:
 

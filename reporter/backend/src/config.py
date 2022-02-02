@@ -5,6 +5,8 @@ Env.read_env()
 
 
 class FlaskConfig:
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CSRF_ENABLED = True
     SECRET_KEY: str = env('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = (
         f'postgresql://{env("POSTGRES_USER")}:'
@@ -15,12 +17,9 @@ class FlaskConfig:
     )
     # prod/dev settings
     FLASK_ENV: str = env('FLASK_ENV')
-    CSRF_ENABLED: bool = env('CSRF_ENABLED')
-    SQLALCHEMY_TRACK_MODIFICATIONS: bool = env('SQLALCHEMY_TRACK_MODIFICATIONS')
 
 
 class FlaskConfigTesting(FlaskConfig):
     TESTING = True
     BCRYPT_LOG_ROUNDS = 4
-    CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = f'postgresql://db_test:db_test@db_test:5432/db_test'
