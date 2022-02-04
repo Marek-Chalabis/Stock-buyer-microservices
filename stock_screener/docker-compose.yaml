@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  app: &app
+    build:
+      context: .
+      dockerfile: ./config/docker/backend/Dockerfile
+      args:
+        USER_ID: 1000
+        APP_STATUS: development # look for entrypoint
+    command: /app/start
+    env_file:
+      - ./config/environment_variables/.env.dev
+    # TODO chce?
+    ports:
+      - 8008:8000
+    depends_on:
+      - redis
+    volumes:
+      - ./backend/src:/app/src
+  redis:
+    image: redis:6.2-alpine
+
+
+  celery_beat:
+    <<: *app
+    command: /app/start-celerybeat
+    ports: [ ]
+
+  celery_worker:
+    <<: *app
+    command: /app/start-worker
+    ports: [ ]
+
+## TODO test this
+#networks:
+#  fill_server_network:
+#  stock_buyer_network:
+#    external: true
