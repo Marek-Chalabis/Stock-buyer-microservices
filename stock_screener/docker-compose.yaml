@@ -11,29 +11,35 @@ services:
     command: /app/start
     env_file:
       - ./config/environment_variables/.env.dev
-    # TODO fix it for internal connection
-    ports:
-      - 8008:8000
     depends_on:
       - redis
     volumes:
       - ./backend/src:/app/src
+    networks:
+      stock_screener_network:
+      stock_buyer_network:
+        aliases:
+          - stock_screener
   redis:
     image: redis:6.2-alpine
-
+    networks:
+      - stock_screener_network
 
   celery_beat:
     <<: *app
     command: /app/start-celerybeat
     ports: [ ]
+    networks:
+      - stock_screener_network
 
   celery_worker:
     <<: *app
     command: /app/start-worker
     ports: [ ]
+    networks:
+      - stock_screener_network
 
-## TODO test this
-#networks:
-#  fill_server_network:
-#  stock_buyer_network:
-#    external: true
+networks:
+  stock_screener_network:
+  stock_buyer_network:
+    external: true
