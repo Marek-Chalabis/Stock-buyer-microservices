@@ -11,7 +11,7 @@ services:
     command: /app/start
     env_file:
       - ./config/environment_variables/.env.dev
-    # TODO chce?
+    # TODO fix it for internal connection
     ports:
       - 8008:8000
     depends_on:
