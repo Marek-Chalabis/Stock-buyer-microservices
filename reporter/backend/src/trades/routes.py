@@ -1,9 +1,4 @@
-from flask_login import login_required
-
 from trades import trades
+from trades.view import TradesView
 
-
-@trades.route('/trades')
-@login_required
-def trades_page():
-    return 'TODO Trades'
+trades.add_url_rule('/trades', view_func=TradesView.as_view('trades_page'))
