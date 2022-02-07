@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
         default=0,
     )
     automatic_trade = db.Column(db.Boolean(), default=False, nullable=False)
-    stock_trades = db.relationship('StockTrade', backref='user')
+    stock_trades = db.relationship('StockTrade', backref='user', lazy='dynamic')
 
     @property
     def password(self) -> str:
