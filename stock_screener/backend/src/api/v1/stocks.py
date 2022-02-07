@@ -19,7 +19,7 @@ router = APIRouter()
 
 @router.get('', response_model=List[schemas.StockBase])
 async def stocks(
-    number_of_stocks: int = Query(default=50, ge=1, le=100),
+    number_of_stocks: int = Query(default=50, ge=1, le=500),
 ) -> Any:
     if settings.APP_STATUS != 'development':
         raise HTTPException(
