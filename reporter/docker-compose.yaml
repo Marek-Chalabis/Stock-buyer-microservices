@@ -1,4 +1,3 @@
-# TODO adjust network for microservices
 version: "3.8"
 
 services:
@@ -14,11 +13,11 @@ services:
       - ./backend:/app
     env_file:
       - ./config/environment_variables/.env.dev
-#    networks:
-#      reporter_network:
-#      stock_buyer_network:
-#        aliases:
-#          - reporter
+    networks:
+      reporter_network:
+      stock_buyer_network:
+        aliases:
+          - reporter
     ports:
       - 5000:5000
     depends_on:
@@ -30,22 +29,21 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./config/environment_variables/.env.dev
-#    networks:
-#      reporter_network:
-  # TODO remove this on prod env
+    networks:
+      reporter_network:
   db_test:
     image: postgres:14.1
     environment:
       - POSTGRES_USER=db_test
       - POSTGRES_PASSWORD=db_test
       - POSTGRES_DB=db_test
-#    networks:
-#      reporter_network:
+    networks:
+      reporter_network:
 
 volumes:
   postgres_data:
-#
-#networks:
-#  reporter_network:
-##  stock_buyer_network:
-##    external: true
+
+networks:
+  reporter_network:
+  stock_buyer_network:
+    external: true
