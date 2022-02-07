@@ -1,37 +1,52 @@
-{% extends '../../templates/base.html' %}
+{% extends 'base.html' %}
 {% block title %}
     Trades
 {% endblock %}
 {% block content %}
-    <h1>Trade Shares</h1>
-    <table class="table table-hover table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Stock ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Price</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for stock in stocks %}
-            <tr class="first-level-table-row center center-block">
-                <td>{{ stock.id }}</td>
-                <td>{{ stock.name }}</td>
-                <td>{{ stock.quantity }}</td>
-                <td>{{ stock.price }}</td>
-                <td class="price-difference">{{ stock.get_percent_price_difference_penultimate() }}% TODO</td>
-                <td>
-                    <button class="btn btn-outline btn-info">
-                        Details TODO
-                    </button>
-                    <button class="btn btn-outline btn-success ml-2">
-                        Purchase TODO
-                    </button>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row m-1">
+        <div class="col-8">
+            <h2>
+                Available trades
+            </h2>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col" colspan="2">Difference</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stock in stocks %}
+                    <tr class="first-level-table-row center center-block">
+                        <td>{{ stock.symbol }}</td>
+                        <td>{{ stock.name }}</td>
+                        <td>{{ stock.available_quantity }}</td>
+                        <td class="money-info">{{ stock.price }}</td>
+                        <td class="plain-difference">{{ stock.plain_difference }}</td>
+                        <td class="percent-difference">{{ stock.percent_difference }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-outline btn-info">
+                                    Details TODO
+                                </button>
+                                <button class="btn btn-outline btn-success ml-2">
+                                    Purchase TODO
+                                </button>
+                            </div>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4">
+            <h2>
+                Owned trades TODO
+            </h2>
+        </div>
+    </div>
 {% endblock %}
