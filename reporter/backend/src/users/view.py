@@ -106,6 +106,6 @@ class ProfileView(View):
             action = (
                 'paid outed' if operation == MoneyOperation.PAY_OUT else 'deposited'
             )
-            flash(message=f'Successfully {action} {amount}$', category='success')
+            flash(message=f'Successfully {action} ${amount}', category='success')
         else:
             flash_errors_from_form(form=self._money_form)
