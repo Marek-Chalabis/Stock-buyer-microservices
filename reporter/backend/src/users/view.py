@@ -35,8 +35,8 @@ class RegisterView(View):
 
     def _handle_correct_register_form(self) -> ResponseReturnValue:
         user_to_create = User.create(
-            username=self._register_form.data,
-            email=self._register_form.data,
+            username=self._register_form.username.data,
+            email=self._register_form.email.data,
             password=self._register_form.password.data,
         )
         login_user(user=user_to_create)
@@ -55,14 +55,12 @@ class LoginView(View):
 
     def dispatch_request(self) -> ResponseReturnValue:
         if self._form.validate_on_submit():
-            return self._handle_correct_form_validation()
+            user = self._get_user_from_form()
+            if user and user.verify_password(password=self._form.password.data):
+                return self._handle_correct_user(user=user)
+            else:
+                flash('Wrong username or password', category='danger')
         return render_template(template_name_or_list='login.html', form=self._form)
-
-    def _handle_correct_form_validation(self) -> ResponseReturnValue:
-        user = self._get_user_from_form()
-        if user and user.verify_password(password=self._form.password.data):
-            return self._handle_correct_user(user=user)
-        return self._handle_incorrect_user()
 
     def _get_user_from_form(self) -> Union[User, None]:
         return User.query.filter_by(username=self._form.username.data).scalar()
@@ -70,9 +68,4 @@ class LoginView(View):
     def _handle_correct_user(self, user: User) -> ResponseReturnValue:
         login_user(user=user)
         flash(f'Welcome: {user.username}', category='success')
-        # TODO change redirect template for trades
-        return redirect(location=url_for(endpoint='users.home_page'))
-
-    def _handle_incorrect_user(self) -> ResponseReturnValue:
-        flash('Wrong username or password', category='danger')
-        return render_template(template_name_or_list='login.html', form=self._form)
+        return redirect(location=url_for(endpoint='trades.trades_page'))
