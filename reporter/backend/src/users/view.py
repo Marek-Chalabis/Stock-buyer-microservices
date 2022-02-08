@@ -15,6 +15,7 @@ from flask_login import (
     login_user,
 )
 
+from users.enums import MoneyOperation
 from users.forms import (
     LoginForm,
     MoneyForm,
@@ -96,9 +97,15 @@ class ProfileView(View):
 
     def _handle_money_form(self) -> None:
         if self._money_form.validate_on_submit():
+            amount = self._money_form.amount.data
+            operation = self._money_form.operation.data
             self._user.user_profile.change_money_based_on_operation(
-                amount=self._money_form.amount.data,
-                operation=self._money_form.operation,
+                amount=amount,
+                operation=operation,
             )
+            action = (
+                'paid outed' if operation == MoneyOperation.PAY_OUT else 'deposited'
+            )
+            flash(message=f'Successfully {action} {amount}$', category='success')
         else:
             flash_errors_from_form(form=self._money_form)

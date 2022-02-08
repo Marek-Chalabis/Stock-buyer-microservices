@@ -40,11 +40,10 @@ class TestProfileView:
     def test_handle_money_form_form_valid(self, mocker, user_in_db):
         login_user(user_in_db)
         mocker_money_form = mocker.patch('users.view.MoneyForm')
-        tested_operation = mocker.Mock(data=MoneyOperation.DEPOSIT)
         mocker_form = mocker.Mock(
             validate_on_submit=mocker.Mock(return_value=True),
             amount=mocker.Mock(data=Decimal(0)),
-            operation=tested_operation,
+            operation=mocker.Mock(data=MoneyOperation.DEPOSIT),
         )
         mocker_money_form.return_value = mocker_form
         mocker_change_money_based_on_operation = mocker.patch(
@@ -52,8 +51,20 @@ class TestProfileView:
         )
         ProfileView()._handle_money_form()
         mocker_change_money_based_on_operation.assert_called_once_with(
-            amount=Decimal(0), operation=tested_operation
+            amount=Decimal(0), operation=MoneyOperation.DEPOSIT
         )
+
+    def test_handle_money_form_form_valid_flash(self, mocker, user_in_db):
+        login_user(user_in_db)
+        mocker_money_form = mocker.patch('users.view.MoneyForm')
+        mocker_form = mocker.Mock(
+            validate_on_submit=mocker.Mock(return_value=True),
+        )
+        mocker_money_form.return_value = mocker_form
+        mocker.patch('users.models.UserProfile.change_money_based_on_operation')
+        mocker_flash = mocker.patch('users.view.flash')
+        ProfileView()._handle_money_form()
+        mocker_flash.assert_called_once()
 
     def test_handle_money_form_form_invalid(self, mocker):
         mocker_money_form = mocker.patch('users.view.MoneyForm')
