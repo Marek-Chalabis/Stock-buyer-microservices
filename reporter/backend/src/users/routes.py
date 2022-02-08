@@ -14,6 +14,7 @@ from users import users
 from users.models import User
 from users.view import (
     LoginView,
+    ProfileView,
     RegisterView,
 )
 
@@ -38,3 +39,4 @@ def logout_page() -> Response:
 
 users.add_url_rule('/register', view_func=RegisterView.as_view('register_page'))
 users.add_url_rule('/login', view_func=LoginView.as_view('login_page'))
+users.add_url_rule('/profile', view_func=ProfileView.as_view('profile_page'))

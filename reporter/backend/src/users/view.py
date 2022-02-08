@@ -1,5 +1,7 @@
 from typing import Union
 
+import flask_login
+
 from flask import (
     flash,
     redirect,
@@ -8,10 +10,15 @@ from flask import (
 )
 from flask.typing import ResponseReturnValue
 from flask.views import View
-from flask_login import login_user
+from flask_login import (
+    login_required,
+    login_user,
+)
 
+from users.enums import MoneyOperation
 from users.forms import (
     LoginForm,
+    MoneyForm,
     RegisterForm,
 )
 from users.models import User
@@ -69,3 +76,36 @@ class LoginView(View):
         login_user(user=user)
         flash(f'Welcome: {user.username}', category='success')
         return redirect(location=url_for(endpoint='trades.trades_page'))
+
+
+class ProfileView(View):
+    methods = ['GET', 'POST']
+    decorators = [login_required]
+
+    def __init__(self) -> None:
+        self._money_form = MoneyForm()
+        self._user = flask_login.current_user
+
+    def dispatch_request(self) -> ResponseReturnValue:
+        """Process correct form based on unique form submit field."""
+        if self._money_form.submit_money.data:
+            self._handle_money_form()
+        return render_template(
+            template_name_or_list='profile.html',
+            money_form=self._money_form,
+        )
+
+    def _handle_money_form(self) -> None:
+        if self._money_form.validate_on_submit():
+            amount = self._money_form.amount.data
+            operation = self._money_form.operation.data
+            self._user.user_profile.change_money_based_on_operation(
+                amount=amount,
+                operation=operation,
+            )
+            action = (
+                'paid outed' if operation == MoneyOperation.PAY_OUT else 'deposited'
+            )
+            flash(message=f'Successfully {action} ${amount}', category='success')
+        else:
+            flash_errors_from_form(form=self._money_form)
