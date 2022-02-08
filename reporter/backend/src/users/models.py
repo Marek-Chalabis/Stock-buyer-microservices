@@ -7,6 +7,7 @@ from app import (
     bcrypt,
     db,
 )
+from users.enums import MoneyOperation
 
 
 class User(UserMixin, db.Model):
@@ -51,4 +52,15 @@ class UserProfile(db.Model):
 
     @property
     def money_in_decimal(self) -> Decimal:
-        return Decimal(self.money[1:])
+        return Decimal(self.money[1:].replace(',', ''))
+
+    def change_money_based_on_operation(
+        self,
+        amount: Decimal,
+        operation: MoneyOperation,
+    ) -> None:
+        change_amount = Decimal(
+            f'{"-" if operation == MoneyOperation.PAY_OUT else ""}{amount}'
+        )
+        self.money = self.money_in_decimal + change_amount
+        db.session.commit()

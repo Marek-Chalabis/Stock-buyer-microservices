@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 
 from app import db
+from users.enums import MoneyOperation
 from users.models import User
 
 
@@ -40,3 +41,19 @@ class TestUserProfile:
 
     def test_money_in_decimal(self, user_in_db):
         assert user_in_db.user_profile.money_in_decimal == Decimal(0)
+
+    @pytest.mark.parametrize(
+        ('tested_operation', 'expected_result'),
+        [
+            (MoneyOperation.DEPOSIT, '$100.00'),
+            (MoneyOperation.PAY_OUT, '-$100.00'),
+        ],
+    )
+    def test_change_money_based_on_operation(
+        self, user_in_db, tested_operation, expected_result
+    ):
+        user_in_db.user_profile.change_money_based_on_operation(
+            amount=Decimal(100),
+            operation=tested_operation,
+        )
+        assert user_in_db.user_profile.money == expected_result
