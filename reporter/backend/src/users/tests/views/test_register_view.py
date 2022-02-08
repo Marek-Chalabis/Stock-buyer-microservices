@@ -52,8 +52,8 @@ class TestRegisterView:
         mocker_create = mocker.patch('users.view.User.create')
         RegisterView()._handle_correct_register_form()
         mocker_create.assert_called_once_with(
-            username=register_form.return_value.data,
-            email=register_form.return_value.data,
+            username='test_username',
+            email='test_email',
             password='test_password',
         )
 
