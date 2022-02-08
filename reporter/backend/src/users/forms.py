@@ -68,13 +68,3 @@ class LoginForm(FlaskForm):
         ],
     )
     submit = wtforms.SubmitField(label='Sign in')
-
-    def validate_username(self, username_to_validate: wtforms.StringField) -> None:
-        user = User.get_user_by_username(username=username_to_validate.data)
-        if not user:
-            raise ValidationError('Username does not exists')
-
-    def validate_password(self, password_to_validate: wtforms.StringField) -> None:
-        user = User.get_user_by_username(username=self.username.data)
-        if user and not user.verify_password(password=password_to_validate.data):
-            raise ValidationError('Wrong password')
