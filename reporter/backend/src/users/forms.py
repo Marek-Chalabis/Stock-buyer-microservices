@@ -1,8 +1,10 @@
+import flask_login
 import wtforms
 
 from flask_wtf import FlaskForm
 from wtforms import ValidationError
 
+from users.enums import MoneyOperation
 from users.models import User
 
 
@@ -68,3 +70,29 @@ class LoginForm(FlaskForm):
         ],
     )
     submit = wtforms.SubmitField(label='Sign in')
+
+
+class MoneyForm(FlaskForm):
+    amount = wtforms.DecimalField(
+        label='Amount:',
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.NumberRange(min=1, max=500000),
+        ],
+    )
+    operation = wtforms.SelectField(
+        label='Operation:',
+        validators=[
+            wtforms.validators.DataRequired(),
+        ],
+        choices=[choice.value for choice in MoneyOperation],
+    )
+    submit_money = wtforms.SubmitField(label='Transfer')
+
+    def validate_amount(self, amount_to_validate: wtforms.DecimalField) -> None:
+        if self.data['operation'] == MoneyOperation.PAY_OUT:
+            if (
+                flask_login.current_user.user_profile.money_in_decimal
+                < amount_to_validate.data
+            ):
+                raise ValidationError('You are trying to pay out more then you have')
