@@ -51,7 +51,8 @@ class TestProfileView:
         )
         ProfileView()._handle_money_form()
         mocker_change_money_based_on_operation.assert_called_once_with(
-            amount=Decimal(0), operation=MoneyOperation.DEPOSIT
+            amount=Decimal(0),
+            operation=MoneyOperation.DEPOSIT,
         )
 
     def test_handle_money_form_form_valid_flash(self, mocker, user_in_db):

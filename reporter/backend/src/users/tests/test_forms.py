@@ -35,7 +35,8 @@ class TestRegisterForm:
 class TestMoneyForm:
     def test_validate_amount_over_account_money(self, mocker, user_in_db):
         mocker.Mock(
-            data='users.forms.flask_login.current_user', return_value=user_in_db
+            data='users.forms.flask_login.current_user',
+            return_value=user_in_db,
         )
         mocker.patch(
             'users.forms.MoneyForm.data',

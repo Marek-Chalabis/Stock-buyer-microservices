@@ -2,7 +2,6 @@ import flask_login
 import wtforms
 
 from flask_wtf import FlaskForm
-from wtforms import ValidationError
 
 from users.enums import MoneyOperation
 from users.models import User
@@ -35,7 +34,8 @@ class RegisterForm(FlaskForm):
         validators=[
             wtforms.validators.DataRequired(),
             wtforms.validators.EqualTo(
-                'password', message='Passwords are not identical'
+                'password',
+                message='Passwords are not identical',
             ),
         ],
     )
@@ -43,17 +43,19 @@ class RegisterForm(FlaskForm):
 
     def validate_username(self, username_to_validate: wtforms.StringField) -> None:
         user_with_username_exists = User.query.filter_by(
-            username=username_to_validate.data
+            username=username_to_validate.data,
         ).scalar()
         if user_with_username_exists:
-            raise ValidationError('Username already exists. Try different username')
+            raise wtforms.ValidationError(
+                'Username already exists. Try different username',
+            )
 
     def validate_email(self, email_to_validate: wtforms.StringField) -> None:
         user_with_email_exists = User.query.filter_by(
-            email=email_to_validate.data
+            email=email_to_validate.data,
         ).scalar()
         if user_with_email_exists:
-            raise ValidationError('Email already exists. Try different email')
+            raise wtforms.ValidationError('Email already exists. Try different email')
 
 
 class LoginForm(FlaskForm):
@@ -91,8 +93,8 @@ class MoneyForm(FlaskForm):
 
     def validate_amount(self, amount_to_validate: wtforms.DecimalField) -> None:
         if self.data['operation'] == MoneyOperation.PAY_OUT:
-            if (
-                flask_login.current_user.user_profile.money_in_decimal
-                < amount_to_validate.data
-            ):
-                raise ValidationError('You are trying to pay out more then you have')
+            user_money = flask_login.current_user.user_profile.money_in_decimal
+            if user_money < amount_to_validate.data:
+                raise wtforms.ValidationError(
+                    'You are trying to pay out more then you have',
+                )

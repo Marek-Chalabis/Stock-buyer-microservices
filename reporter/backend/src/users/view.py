@@ -1,7 +1,5 @@
 from typing import Union
 
-import flask_login
-
 from flask import (
     flash,
     redirect,
@@ -11,6 +9,7 @@ from flask import (
 from flask.typing import ResponseReturnValue
 from flask.views import View
 from flask_login import (
+    current_user,
     login_required,
     login_user,
 )
@@ -37,7 +36,8 @@ class RegisterView(View):
         else:
             flash_errors_from_form(form=self._register_form)
         return render_template(
-            template_name_or_list='register.html', form=self._register_form
+            template_name_or_list='register.html',
+            form=self._register_form,
         )
 
     def _handle_correct_register_form(self) -> ResponseReturnValue:
@@ -84,7 +84,7 @@ class ProfileView(View):
 
     def __init__(self) -> None:
         self._money_form = MoneyForm()
-        self._user = flask_login.current_user
+        self._user = current_user
 
     def dispatch_request(self) -> ResponseReturnValue:
         """Process correct form based on unique form submit field."""

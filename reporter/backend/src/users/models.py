@@ -1,11 +1,17 @@
 from decimal import Decimal
 
 from flask_login import UserMixin
+from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import MONEY
 
 from app import (
     bcrypt,
     db,
+)
+from trades.enums import Operation
+from trades.models import (
+    Stock,
+    StockTrade,
 )
 from users.enums import MoneyOperation
 
@@ -25,8 +31,10 @@ class User(UserMixin, db.Model):
 
     @password.setter
     def password(self, plain_password) -> None:
-        self.password_hash = bcrypt.generate_password_hash(plain_password).decode(
-            'utf-8'
+        self.password_hash = bcrypt.generate_password_hash(  # noqa: WPS601
+            plain_password,
+        ).decode(
+            'utf-8',
         )
 
     def verify_password(self, password) -> bool:
@@ -39,9 +47,48 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return user_to_create
 
+    def get_quantity_of_acquired_trades(self):  # TODO typing/tests
+        bought = (
+            db.session.query(
+                Stock.symbol,
+                func.sum(StockTrade.quantity).label('bought'),
+            )
+            .join(StockTrade, StockTrade.stock_id == Stock.id)
+            .filter(
+                StockTrade.user_id == self.id,
+                StockTrade.operation == Operation.BUY,
+            )
+            .group_by(Stock.symbol)
+            .subquery()
+        )
+        sold = (
+            db.session.query(
+                Stock.symbol,
+                func.sum(StockTrade.quantity).label('sold'),
+            )
+            .join(StockTrade, StockTrade.stock_id == Stock.id)
+            .filter(
+                StockTrade.user_id == self.id,
+                StockTrade.operation == Operation.SELL,
+            )
+            .group_by(Stock.symbol)
+            .subquery()
+        )
+        return (
+            db.session.query(
+                bought.c.symbol,
+                bought.c.bought,
+                sold.c.sold,
+                (bought.c.bought - sold.c.sold).label('currently_acquired'),
+            )
+            .join(sold, sold.c.symbol == bought.c.symbol)
+            .order_by(bought.c.symbol)
+            .all()
+        )
+
 
 class UserProfile(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     money = db.Column(
         MONEY,
         nullable=False,
@@ -59,8 +106,7 @@ class UserProfile(db.Model):
         amount: Decimal,
         operation: MoneyOperation,
     ) -> None:
-        change_amount = Decimal(
-            f'{"-" if operation == MoneyOperation.PAY_OUT else ""}{amount}'
-        )
-        self.money = self.money_in_decimal + change_amount
+        operator_for_money_change = '-' if operation == MoneyOperation.PAY_OUT else ''
+        change_amount = Decimal(f'{operator_for_money_change}{amount}')
+        self.money = self.money_in_decimal + change_amount  # noqa: WPS601
         db.session.commit()

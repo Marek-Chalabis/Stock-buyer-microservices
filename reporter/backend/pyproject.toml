@@ -96,8 +96,12 @@ ignore = [
     "WPS305",
     # WPS306: Found class without a base class
     "WPS306",
+    # WPS317 Found incorrect multi-line parameters
+    "WPS317",
     # WPS323: Found `%` string formatting
     "WPS323",
+    # Found a line that starts with a dot
+    "WPS348",
     # WPS410: Found wrong metadata variable
     "WPS410",
     # WPS412: Found __init__.py module with logic
@@ -109,8 +113,10 @@ ignore = [
 ]
 exclude = ".git,"
 per-file-ignores = """
-  */test*.py: S101, S106, WPS214, WPS226, WPS437
+  */test*.py: S101, S106, WPS202, WPS214, WPS226, WPS437
   ./conftest.py: WPS411
+  */**__init__.py: F401, E402
+  */**enums*.py: WPS115
 """
 
 [tool.mypy]

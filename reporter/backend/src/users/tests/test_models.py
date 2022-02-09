@@ -50,7 +50,10 @@ class TestUserProfile:
         ],
     )
     def test_change_money_based_on_operation(
-        self, user_in_db, tested_operation, expected_result
+        self,
+        user_in_db,
+        tested_operation,
+        expected_result,
     ):
         user_in_db.user_profile.change_money_based_on_operation(
             amount=Decimal(100),

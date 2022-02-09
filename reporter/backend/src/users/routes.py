@@ -33,7 +33,7 @@ def home_page() -> str:
 @users.route('/logout')
 def logout_page() -> Response:
     logout_user()
-    flash(f'You have been logout', category='info')
+    flash('You have been logout', category='info')
     return redirect(location=url_for(endpoint='users.home_page'))
 
 

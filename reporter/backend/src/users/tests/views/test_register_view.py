@@ -25,7 +25,7 @@ class TestRegisterView:
         )
         mocker_register_form = mocker.patch('users.view.RegisterForm')
         mocker_register_form.return_value = mocker.Mock(
-            validate_on_submit=mocker.Mock(return_value=True)
+            validate_on_submit=mocker.Mock(return_value=True),
         )
         RegisterView().dispatch_request()
         mocker_handle_correct_register_form.assert_called_once_with()

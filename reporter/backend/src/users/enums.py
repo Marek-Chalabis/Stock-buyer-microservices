@@ -1,6 +1,6 @@
 import enum
 
 
-class MoneyOperation(str, enum.Enum):
+class MoneyOperation(enum.Enum):
     DEPOSIT = 'Deposit'
     PAY_OUT = 'Pay out'

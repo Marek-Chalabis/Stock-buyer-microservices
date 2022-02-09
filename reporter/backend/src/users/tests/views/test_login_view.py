@@ -21,7 +21,7 @@ class TestLoginView:
         mocker_login_form.return_value = mocker_form
         return mocker_login_form
 
-    def test_dispatch_request_valid_form_user_password(self, mocker, login_form):
+    def test_dispatch_request_valid(self, mocker, login_form):
         mocker_get_user_from_form = mocker.patch(
             'users.view.LoginView._get_user_from_form',
         )
@@ -33,7 +33,7 @@ class TestLoginView:
             user=mocker_get_user_from_form(),
         )
 
-    def test_dispatch_request_valid_form_user_invalid_password(
+    def test_dispatch_request_invalid_password(
         self,
         mocker,
         login_form,
