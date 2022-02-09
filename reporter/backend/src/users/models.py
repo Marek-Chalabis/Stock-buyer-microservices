@@ -106,7 +106,9 @@ class UserProfile(db.Model):
         amount: Decimal,
         operation: MoneyOperation,
     ) -> None:
-        operator_for_money_change = '-' if operation == MoneyOperation.PAY_OUT else ''
+        operator_for_money_change = (
+            '-' if operation == MoneyOperation.PAY_OUT.value else ''
+        )
         change_amount = Decimal(f'{operator_for_money_change}{amount}')
         self.money = self.money_in_decimal + change_amount  # noqa: WPS601
         db.session.commit()

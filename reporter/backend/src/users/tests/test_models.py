@@ -57,6 +57,6 @@ class TestUserProfile:
     ):
         user_in_db.user_profile.change_money_based_on_operation(
             amount=Decimal(100),
-            operation=tested_operation,
+            operation=tested_operation.value,
         )
         assert user_in_db.user_profile.money == expected_result
