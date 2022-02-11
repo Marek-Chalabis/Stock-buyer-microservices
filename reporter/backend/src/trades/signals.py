@@ -2,7 +2,6 @@ from sqlalchemy import event
 
 from trades.enums import Operation
 from trades.models import StockTrade
-
 from utils.type_parsers import change_to_decimal
 
 
