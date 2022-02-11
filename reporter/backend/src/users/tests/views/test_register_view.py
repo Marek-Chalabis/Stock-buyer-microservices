@@ -48,23 +48,19 @@ class TestRegisterView:
             form=register_form.return_value,
         )
 
-    def test_handle_correct_register_form_user_create(self, mocker, register_form):
-        mocker_create = mocker.patch('users.view.User.create')
+    def test_handle_correct_register_form_user_save(self, mocker, register_form):
+        mocker_save = mocker.patch('users.view.User.save')
         RegisterView()._handle_correct_register_form()
-        mocker_create.assert_called_once_with(
-            username='test_username',
-            email='test_email',
-            password='test_password',
-        )
+        mocker_save.assert_called_once_with()
 
     def test_handle_correct_register_form_redirect(self, mocker, register_form):
-        mocker.patch('users.view.User.create')
+        mocker.patch('users.view.User.save')
         mocker_flash = mocker.patch('users.view.flash')
         RegisterView()._handle_correct_register_form()
         mocker_flash.assert_called_once()
 
     def test_handle_correct_register_form_flash(self, mocker, register_form):
-        mocker.patch('users.view.User.create')
+        mocker.patch('users.view.User.save')
         mocker_redirect = mocker.patch('users.view.redirect')
         mocker_url_for = mocker.patch('users.view.url_for')
         RegisterView()._handle_correct_register_form()

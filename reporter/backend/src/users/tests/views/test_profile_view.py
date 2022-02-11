@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+import pytest
+
 from flask_login import login_user
 
 from users.enums import MoneyOperation
@@ -37,22 +39,35 @@ class TestProfileView:
             money_form=mocker_form,
         )
 
-    def test_handle_money_form_form_valid(self, mocker, user_in_db):
+    @pytest.mark.parametrize(
+        ('tested_amount', 'expected_amount'),
+        [
+            (Decimal(10), '10'),
+            (Decimal(-10), '-10'),
+        ],
+    )
+    def test_handle_money_form_form_valid(
+        self,
+        mocker,
+        user_in_db,
+        tested_amount,
+        expected_amount,
+    ):
         login_user(user_in_db)
         mocker_money_form = mocker.patch('users.view.MoneyForm')
         mocker_form = mocker.Mock(
             validate_on_submit=mocker.Mock(return_value=True),
-            amount=mocker.Mock(data=Decimal(0)),
+            amount=mocker.Mock(data=tested_amount),
             operation=mocker.Mock(data=MoneyOperation.DEPOSIT),
         )
         mocker_money_form.return_value = mocker_form
-        mocker_change_money_based_on_operation = mocker.patch(
-            'users.models.UserProfile.change_money_based_on_operation',
+        mocker_update_money_by_amount = mocker.patch(
+            'users.models.UserProfile.update_money_by_amount',
         )
         ProfileView()._handle_money_form()
-        mocker_change_money_based_on_operation.assert_called_once_with(
-            amount=Decimal(0),
-            operation=MoneyOperation.DEPOSIT,
+        mocker_update_money_by_amount.assert_called_once_with(
+            amount=expected_amount,
+            commit=True,
         )
 
     def test_handle_money_form_form_valid_flash(self, mocker, user_in_db):
@@ -62,7 +77,7 @@ class TestProfileView:
             validate_on_submit=mocker.Mock(return_value=True),
         )
         mocker_money_form.return_value = mocker_form
-        mocker.patch('users.models.UserProfile.change_money_based_on_operation')
+        mocker.patch('users.models.UserProfile.update_money_by_amount')
         mocker_flash = mocker.patch('users.view.flash')
         ProfileView()._handle_money_form()
         mocker_flash.assert_called_once()
