@@ -99,11 +99,9 @@ class ProfileView(View):
         if self._money_form.validate_on_submit():
             amount = self._money_form.amount.data
             operation = self._money_form.operation.data
+            amount_operator = '-' if operation == MoneyOperation.PAY_OUT.value else ''
             self._user.user_profile.update_money_by_amount(
-                amount=(
-                    f'{"-" if operation == MoneyOperation.PAY_OUT.value else ""}'
-                    + f'{amount}'
-                ),
+                amount=f'{amount_operator}{amount}',
                 commit=True,
             )
             action = (

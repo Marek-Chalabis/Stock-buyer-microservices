@@ -57,7 +57,7 @@ class User(SaveMixin, UserMixin, db.Model):
                     case(
                         [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
                         else_=-StockTrade.quantity,
-                    )
+                    ),
                 ).label('currently_acquired'),
             )
             .join(StockTrade, StockTrade.stock_id == Stock.id)
@@ -82,6 +82,8 @@ class UserProfile(db.Model):
         amount: Union[str, Decimal, float],
         commit: False,
     ) -> None:
-        self.money = change_to_decimal(self.money) + change_to_decimal(amount)
+        self.money = change_to_decimal(self.money) + change_to_decimal(  # noqa: WPS601
+            amount,
+        )
         if commit:
             db.session.commit()
