@@ -80,7 +80,7 @@ class UserProfile(db.Model):
     def update_money_by_amount(
         self,
         amount: Union[str, Decimal, float],
-        commit: False,
+        commit: bool = False,
     ) -> None:
         self.money = change_to_decimal(self.money) + change_to_decimal(  # noqa: WPS601
             amount,
