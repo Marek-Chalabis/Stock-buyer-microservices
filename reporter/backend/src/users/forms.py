@@ -92,7 +92,7 @@ class MoneyForm(FlaskForm):
     submit_money = wtforms.SubmitField(label='Transfer')
 
     def validate_amount(self, amount_to_validate: wtforms.DecimalField) -> None:
-        if self.data['operation'] == MoneyOperation.PAY_OUT:
+        if self.data['operation'] == MoneyOperation.PAY_OUT.value:
             user_money = flask_login.current_user.user_profile.money_in_decimal
             if user_money < amount_to_validate.data:
                 raise wtforms.ValidationError(
