@@ -29,7 +29,10 @@ from utils.view_utils import flash_errors_from_form
 
 
 class BaseSellBuyTradeView(ABC, View):
-    """Base class providing methods to handle buy/sell action on trades."""
+    """Base class providing methods to handle buy/sell action on trades.
+
+    Forms are connected by id: bought_stock, TODO
+    """
 
     methods = ['GET', 'POST']
     decorators = [login_required]
@@ -57,11 +60,11 @@ class BaseSellBuyTradeView(ABC, View):
 
     def _handle_buy_trades_form(self) -> None:  # TODO extract to more methods
         if self._buy_trades_form.validate_on_submit():
-            stock_symbol = request.form.get('bought_stocks')
-            stock = Stock.get_last_stock_by_symbol(stock_symbol=stock_symbol)
             user_money = change_to_decimal(
                 flask_login.current_user.user_profile.money,
             )
+            stock_symbol = request.form.get('bought_stock')
+            stock = Stock.get_last_stock_by_symbol(symbol=stock_symbol)
             stock_price = change_to_decimal(stock.price)
             cost = self._buy_trades_form.amount.data * stock_price
             if cost < user_money:
