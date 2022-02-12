@@ -17,10 +17,10 @@ class BuyTradesForm(FlaskForm):
     submit_buy_trades = wtforms.SubmitField(label='Buy trades')
 
     def validate_amount(self, amount_to_validate: wtforms.DecimalField) -> None:
-        stock_symbol = request.form.get('bought_stocks')
-        available_quantity = Stock.get_available_quantity_of_stock(
-            stock_symbol=stock_symbol,
-        )
+        stock_symbol = request.form.get('bought_stock')
+        available_quantity = Stock.get_last_stock_by_symbol(
+            symbol=stock_symbol
+        ).quantity
         if amount_to_validate.data > available_quantity:
             raise wtforms.ValidationError(
                 f'You are trying to buy more stocks("{stock_symbol}") '
