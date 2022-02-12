@@ -1,14 +1,19 @@
 import sqlalchemy
 
-from sqlalchemy import func
+from sqlalchemy import (
+    case,
+    desc,
+    func,
+)
 from sqlalchemy.dialects.postgresql import MONEY
 
 from app import db
 from trades.enums import (
     DoneBy,
     Operation,
-    StocksHierarchy,
 )
+from utils.models_mixins import SaveMixin
+from utils.typing import QUERY_OR_SUBQUERY
 
 
 class Stock(db.Model):
@@ -28,71 +33,94 @@ class Stock(db.Model):
     stock_trades = db.relationship('StockTrade', backref='stock', lazy='dynamic')
 
     @classmethod
-    def get_stocks(
+    def get_stocks_date_rank_desc(
         cls,
-        stocks_hierarchy: StocksHierarchy = StocksHierarchy.CURRENT,
-        return_subquery=False,
-    ):  # TODO typing
-        """Stocks grouped by symbol and by creation date."""
-        subquery = db.session.query(
+        return_subquery: bool = False,
+    ) -> QUERY_OR_SUBQUERY:
+        """Ordered stocks by desc creation date.
+
+        date_rank_desc=1 will be most recent
+        date_rank_desc=n will be next after recent
+
+        Added fields to Stock:
+            - date_rank_desc
+        """
+        query = db.session.query(
             cls,
             func.rank()
-            .over(order_by=Stock.created_date.desc(), partition_by=cls.symbol)
+            .over(order_by=desc(cls.created_date), partition_by=cls.symbol)
             .label('date_rank_desc'),
-        ).subquery()
-        query = db.session.query(subquery).filter(
-            subquery.c.date_rank_desc == stocks_hierarchy.value
         )
         return query.subquery() if return_subquery else query.all()
 
     @classmethod
-    def get_quantity_of_bought_stocks(cls, return_subquery=False):  # TODO typing
-        """Quantity of stocks in possess of the users."""
-        query = (
+    def get_stocks(cls, return_subquery: bool = False) -> QUERY_OR_SUBQUERY:
+        """Stocks grouped by symbol with  basic data.
+
+        Row fields:
+            - symbol
+            - current_price
+            - previous_price
+            - available_quantity
+        """
+        stocks_date_rank_desc = cls.get_stocks_date_rank_desc(return_subquery=True)
+        trades_in_user_posses = (
             db.session.query(
-                cls.symbol, func.sum(StockTrade.quantity).label('bought_stocks')
+                cls.symbol,
+                func.sum(
+                    case(
+                        [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
+                        else_=-StockTrade.quantity,
+                    ),
+                ).label('user_trades_quantity'),
             )
             .join(StockTrade, cls.id == StockTrade.stock_id, isouter=True)
-            .filter(StockTrade.operation == Operation.BUY.value)
             .group_by(cls.symbol)
+        ).subquery()
+        date_rank_price = lambda rank: func.sum(
+            case(
+                [
+                    (
+                        stocks_date_rank_desc.c.date_rank_desc == rank,
+                        stocks_date_rank_desc.c.price,
+                    )
+                ],
+                else_=None,
+            )
         )
-        return query.subquery() if return_subquery else query.all()
-
-    @classmethod
-    def get_quantity_of_all_stocks(cls, return_subquery=False):  # TODO typing
-        """Quantity of all stocks that was added to buy."""
-        query = db.session.query(
-            cls.symbol, func.sum(cls.quantity).label('all_stocks')
-        ).group_by(cls.symbol)
-        return query.subquery() if return_subquery else query.all()
-
-    @classmethod
-    def get_quantity_of_available_stocks_to_buy(
-        cls,
-        return_subquery=False,
-    ):  # TODO typing
-        """Available stocks quantity to buy."""
-        bought_stocks = cls.get_quantity_of_bought_stocks(return_subquery=True)
-        all_stocks = cls.get_quantity_of_all_stocks(return_subquery=True)
         query = (
             db.session.query(
-                bought_stocks.c.symbol,
+                stocks_date_rank_desc.c.symbol,
+                date_rank_price(1).label('current_price'),
+                date_rank_price(2).label('previous_price'),
                 (
-                    func.sum(all_stocks.c.all_stocks)
-                    - func.sum(bought_stocks.c.bought_stocks)
+                    func.sum(stocks_date_rank_desc.c.quantity)
+                    - trades_in_user_posses.c.user_trades_quantity
                 ).label('available_quantity'),
             )
             .join(
-                all_stocks,
-                all_stocks.c.symbol == bought_stocks.c.symbol,
-                isouter=True,
+                trades_in_user_posses,
+                trades_in_user_posses.c.symbol == stocks_date_rank_desc.c.symbol,
             )
-            .group_by(bought_stocks.c.symbol)
+            .group_by(
+                stocks_date_rank_desc.c.symbol,
+                trades_in_user_posses.c.user_trades_quantity,
+            )
+            .order_by(stocks_date_rank_desc.c.symbol)
         )
         return query.subquery() if return_subquery else query.all()
 
+    @classmethod
+    def get_last_stock_by_symbol(cls, symbol: str) -> 'Stock':
+        return (
+            db.session.query(cls)
+            .filter(cls.symbol == symbol)
+            .order_by(desc(cls.created_date))
+            .first()
+        )
 
-class StockTrade(db.Model):
+
+class StockTrade(SaveMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     operation = db.Column(db.Enum(Operation), nullable=False)
