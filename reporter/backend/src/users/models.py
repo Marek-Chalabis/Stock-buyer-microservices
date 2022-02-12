@@ -63,6 +63,7 @@ class User(SaveMixin, UserMixin, db.Model):
             .join(StockTrade, StockTrade.stock_id == Stock.id)
             .filter(StockTrade.user_id == self.id)
             .group_by(Stock.symbol)
+            .order_by(Stock.symbol)
             .all()
         )
 
