@@ -14,19 +14,19 @@ from users.models import User
 from users.tests.factories import UserFactory
 
 
-class StockFactory(factory.alchemy.SQLAlchemyModelFactory):
+class StockFactory(factory.Factory):
     class Meta:
         model = Stock
 
     id: int = 1
-    symbol: str = 'test_symbol'
+    symbol: str = 'TEST'
     name: str = 'test_name'
     price: str = '$100'
     quantity: int = 1
     created_date: datetime = datetime.now()
 
 
-class StockTradeFactory(factory.alchemy.SQLAlchemyModelFactory):
+class StockTradeFactory(factory.Factory):
     class Meta:
         model = StockTrade
 

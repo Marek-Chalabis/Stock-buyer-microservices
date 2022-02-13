@@ -7,6 +7,9 @@ from sqlalchemy.orm import scoped_session
 from app import create_app
 from app import db as _db
 from config import FlaskConfigTesting
+# register factories and fixtures
+from trades.tests.conftest import *
+from users.tests.conftest import *
 
 
 @pytest.fixture

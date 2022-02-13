@@ -58,7 +58,7 @@ class BaseSellBuyTradeView(ABC, View):
             **self.data_for_template,
         )
 
-    def _handle_buy_trades_form(self) -> None:  # TODO extract to more methods
+    def _handle_buy_trades_form(self) -> None:
         if self._buy_trades_form.validate_on_submit():
             user_money = change_to_decimal(
                 flask_login.current_user.user_profile.money,
