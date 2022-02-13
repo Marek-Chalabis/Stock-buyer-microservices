@@ -67,8 +67,17 @@ class Stock(db.Model):
                 cls.symbol,
                 func.sum(
                     case(
-                        [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
-                        else_=-StockTrade.quantity,
+                        [
+                            (
+                                StockTrade.operation == Operation.BUY,
+                                StockTrade.quantity,
+                            ),
+                            (
+                                StockTrade.operation == Operation.SELL,
+                                -StockTrade.quantity,
+                            ),
+                        ],
+                        else_=0,
                     ),
                 ).label('user_trades_quantity'),
             )
@@ -115,6 +124,16 @@ class Stock(db.Model):
             .filter(cls.symbol == symbol)
             .order_by(desc(cls.created_date))
             .first()
+        )
+
+    @property
+    def available_quantity(self) -> int:
+        stocks = self.get_stocks(return_subquery=True)
+        return (
+            db.session.query(stocks)
+            .filter(Stock.symbol == self.symbol)
+            .first()
+            .available_quantity
         )
 
 

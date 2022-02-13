@@ -46,26 +46,29 @@ class User(SaveMixin, UserMixin, db.Model):
             'utf-8',
         )
 
-    def verify_password(self, password) -> bool:
-        return bcrypt.check_password_hash(self.password_hash, password)
-
-    def get_quantity_of_acquired_trades(self) -> List[Row]:
+    @property
+    def quantity_of_acquired_trades(self) -> List[Row]:
+        currently_acquired = func.sum(
+            case(
+                [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
+                else_=-StockTrade.quantity,
+            ),
+        )
         return (
             db.session.query(
                 Stock.symbol,
-                func.sum(
-                    case(
-                        [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
-                        else_=-StockTrade.quantity,
-                    ),
-                ).label('currently_acquired'),
+                currently_acquired.label('currently_acquired'),
             )
             .join(StockTrade, StockTrade.stock_id == Stock.id)
             .filter(StockTrade.user_id == self.id)
             .group_by(Stock.symbol)
+            .having(currently_acquired > 0)
             .order_by(Stock.symbol)
             .all()
         )
+
+    def verify_password(self, password) -> bool:
+        return bcrypt.check_password_hash(self.password_hash, password)
 
 
 class UserProfile(db.Model):

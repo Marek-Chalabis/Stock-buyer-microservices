@@ -33,5 +33,5 @@ class TradesView(BaseSellBuyTradeView):
         ).all()
         return {
             'trades': trades_for_view,
-            'user_trades': flask_login.current_user.get_quantity_of_acquired_trades(),
+            'user_trades': flask_login.current_user.quantity_of_acquired_trades,
         }
