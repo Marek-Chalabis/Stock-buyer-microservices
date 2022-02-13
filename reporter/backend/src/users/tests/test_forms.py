@@ -41,7 +41,7 @@ class TestMoneyForm:
         mocker.patch(
             'users.forms.MoneyForm.data',
             new_callable=mocker.PropertyMock,
-            return_value={'operation': MoneyOperation.PAY_OUT},
+            return_value={'operation': MoneyOperation.PAY_OUT.value},
         )
         login_user(user_in_db)
         mock_amount = mocker.Mock(data=Decimal(1))

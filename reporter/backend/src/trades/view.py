@@ -1,67 +1,37 @@
-from flask import render_template
-from flask.typing import ResponseReturnValue
-from flask.views import View
-from flask_login import login_required
+from typing import Any
+
+import flask_login
+
 from sqlalchemy import (
     Numeric,
     cast,
 )
 
 from app import db
-from trades.enums import StocksHierarchy
 from trades.models import Stock
+from trades.view_base import BaseSellBuyTradeView
 
 
-class TradesView(View):
-    methods = ['GET']
-    decorators = [login_required]
+class TradesView(BaseSellBuyTradeView):
+    template_to_render = 'stocks.html'
 
-    def get_stocks(self):  # TODO typing
-        """Stocks with price difference and available quantity to buy."""
-        current_stocks_subquery = Stock.get_stocks(return_subquery=True)
-        previous_stocks_subquery = Stock.get_stocks(
-            stocks_hierarchy=StocksHierarchy.PREVIOUS,
-            return_subquery=True,
-        )
-        available_stocks_subquery = Stock.get_quantity_of_available_stocks_to_buy(
-            return_subquery=True,
-        )
-        return (
-            db.session.query(
-                current_stocks_subquery,
-                available_stocks_subquery.c.available_quantity,
-                (
-                    current_stocks_subquery.c.price - previous_stocks_subquery.c.price
-                ).label('plain_difference'),
-                (
-                    cast(
-                        (
-                            (
-                                current_stocks_subquery.c.price
-                                - previous_stocks_subquery.c.price
-                            )
-                            * 100
-                        )
-                        / previous_stocks_subquery.c.price,
-                        Numeric(10, 2),
-                    )
-                ).label('percent_difference'),
-            )
-            .join(
-                previous_stocks_subquery,
-                current_stocks_subquery.c.symbol == previous_stocks_subquery.c.symbol,
-                isouter=True,
-            )
-            .join(
-                available_stocks_subquery,
-                current_stocks_subquery.c.symbol == available_stocks_subquery.c.symbol,
-            )
-            .order_by(current_stocks_subquery.c.symbol)
-            .all()
-        )
-
-    def dispatch_request(self) -> ResponseReturnValue:
-        return render_template(
-            template_name_or_list='stocks.html',
-            stocks=self.get_stocks(),
-        )
+    @property
+    def data_for_template(self) -> dict[str:Any]:
+        stocks = Stock.get_stocks(return_subquery=True)
+        trades_for_view = db.session.query(
+            stocks,
+            (stocks.c.current_price - stocks.c.previous_price).label(
+                'plain_difference',
+            ),
+            (
+                cast(
+                    ((stocks.c.current_price - stocks.c.previous_price) * 100)
+                    / stocks.c.current_price,
+                    Numeric(10, 2),
+                )
+            ).label('percent_difference'),
+        ).all()
+        return {
+            'trades': trades_for_view,
+            'user_trades': flask_login.current_user.get_quantity_of_acquired_trades(),
+        }

@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 
 from users.enums import MoneyOperation
 from users.models import User
+from utils.type_parsers import change_to_decimal
 
 
 class RegisterForm(FlaskForm):
@@ -92,8 +93,8 @@ class MoneyForm(FlaskForm):
     submit_money = wtforms.SubmitField(label='Transfer')
 
     def validate_amount(self, amount_to_validate: wtforms.DecimalField) -> None:
-        if self.data['operation'] == MoneyOperation.PAY_OUT:
-            user_money = flask_login.current_user.user_profile.money_in_decimal
+        if self.data['operation'] == MoneyOperation.PAY_OUT.value:
+            user_money = change_to_decimal(flask_login.current_user.user_profile.money)
             if user_money < amount_to_validate.data:
                 raise wtforms.ValidationError(
                     'You are trying to pay out more then you have',

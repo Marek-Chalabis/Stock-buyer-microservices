@@ -1,8 +1,16 @@
 from decimal import Decimal
+from typing import (
+    List,
+    Union,
+)
 
 from flask_login import UserMixin
-from sqlalchemy import func
+from sqlalchemy import (
+    case,
+    func,
+)
 from sqlalchemy.dialects.postgresql import MONEY
+from sqlalchemy.engine import Row
 
 from app import (
     bcrypt,
@@ -13,10 +21,11 @@ from trades.models import (
     Stock,
     StockTrade,
 )
-from users.enums import MoneyOperation
+from utils.models_mixins import SaveMixin
+from utils.type_parsers import change_to_decimal
 
 
-class User(UserMixin, db.Model):
+class User(SaveMixin, UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(length=30), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
@@ -40,49 +49,21 @@ class User(UserMixin, db.Model):
     def verify_password(self, password) -> bool:
         return bcrypt.check_password_hash(self.password_hash, password)
 
-    @classmethod
-    def create(cls, username: str, email: str, password: str) -> 'User':
-        user_to_create = cls(username=username, email=email, password=password)
-        db.session.add(user_to_create)
-        db.session.commit()
-        return user_to_create
-
-    def get_quantity_of_acquired_trades(self):  # TODO typing/tests
-        bought = (
-            db.session.query(
-                Stock.symbol,
-                func.sum(StockTrade.quantity).label('bought'),
-            )
-            .join(StockTrade, StockTrade.stock_id == Stock.id)
-            .filter(
-                StockTrade.user_id == self.id,
-                StockTrade.operation == Operation.BUY,
-            )
-            .group_by(Stock.symbol)
-            .subquery()
-        )
-        sold = (
-            db.session.query(
-                Stock.symbol,
-                func.sum(StockTrade.quantity).label('sold'),
-            )
-            .join(StockTrade, StockTrade.stock_id == Stock.id)
-            .filter(
-                StockTrade.user_id == self.id,
-                StockTrade.operation == Operation.SELL,
-            )
-            .group_by(Stock.symbol)
-            .subquery()
-        )
+    def get_quantity_of_acquired_trades(self) -> List[Row]:
         return (
             db.session.query(
-                bought.c.symbol,
-                bought.c.bought,
-                sold.c.sold,
-                (bought.c.bought - sold.c.sold).label('currently_acquired'),
+                Stock.symbol,
+                func.sum(
+                    case(
+                        [(StockTrade.operation == Operation.BUY, StockTrade.quantity)],
+                        else_=-StockTrade.quantity,
+                    ),
+                ).label('currently_acquired'),
             )
-            .join(sold, sold.c.symbol == bought.c.symbol)
-            .order_by(bought.c.symbol)
+            .join(StockTrade, StockTrade.stock_id == Stock.id)
+            .filter(StockTrade.user_id == self.id)
+            .group_by(Stock.symbol)
+            .order_by(Stock.symbol)
             .all()
         )
 
@@ -97,18 +78,13 @@ class UserProfile(db.Model):
     trade_bot = db.Column(db.Boolean, default=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    @property
-    def money_in_decimal(self) -> Decimal:
-        return Decimal(self.money[1:].replace(',', ''))
-
-    def change_money_based_on_operation(
+    def update_money_by_amount(
         self,
-        amount: Decimal,
-        operation: MoneyOperation,
+        amount: Union[str, Decimal, float],
+        commit: bool = False,
     ) -> None:
-        operator_for_money_change = (
-            '-' if operation == MoneyOperation.PAY_OUT.value else ''
+        self.money = change_to_decimal(self.money) + change_to_decimal(  # noqa: WPS601
+            amount,
         )
-        change_amount = Decimal(f'{operator_for_money_change}{amount}')
-        self.money = self.money_in_decimal + change_amount  # noqa: WPS601
-        db.session.commit()
+        if commit:
+            db.session.commit()

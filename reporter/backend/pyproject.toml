@@ -92,6 +92,8 @@ ignore = [
     "DAR401",
     # WPS114 Found underscored name pattern
     "WPS114",
+    # WPS237: Found a too complex `f` string
+    "WPS237",
     # WPS305: Found `f` string
     "WPS305",
     # WPS306: Found class without a base class
@@ -113,7 +115,7 @@ ignore = [
 ]
 exclude = ".git,"
 per-file-ignores = """
-  */test*.py: S101, S106, WPS202, WPS214, WPS226, WPS437
+  */test*.py: S101, S106, WPS202, WPS211, WPS214, WPS226, WPS437
   ./conftest.py: WPS411
   */**__init__.py: F401, E402
   */**enums*.py: WPS115

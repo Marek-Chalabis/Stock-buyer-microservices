@@ -1,0 +1,18 @@
+from decimal import Decimal
+
+import pytest
+import wtforms
+
+from flask_login import login_user
+
+from trades.forms import BuyTradesForm
+
+
+class TestBuyTradesForm:
+    def test_validate_amount(self, mocker, user_in_db, stock):
+        mocker.patch('trades.forms.Stock.get_last_stock_by_symbol', return_value=stock)
+        login_user(user_in_db)
+        mock_amount = mocker.Mock(data=Decimal(2))
+        buy_trades_form = BuyTradesForm()
+        with pytest.raises(wtforms.validators.ValidationError):
+            buy_trades_form.validate_amount(mock_amount)

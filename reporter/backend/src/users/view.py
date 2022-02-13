@@ -41,14 +41,14 @@ class RegisterView(View):
         )
 
     def _handle_correct_register_form(self) -> ResponseReturnValue:
-        user_to_create = User.create(
+        created_user = User(
             username=self._register_form.username.data,
             email=self._register_form.email.data,
             password=self._register_form.password.data,
-        )
-        login_user(user=user_to_create)
+        ).save()
+        login_user(user=created_user)
         flash(
-            f'Account {user_to_create.username} created successfully',
+            f'Account {created_user.username} created successfully',
             category='success',
         )
         return redirect(location=url_for(endpoint='trades.trades_page'))
@@ -99,9 +99,10 @@ class ProfileView(View):
         if self._money_form.validate_on_submit():
             amount = self._money_form.amount.data
             operation = self._money_form.operation.data
-            self._user.user_profile.change_money_based_on_operation(
-                amount=amount,
-                operation=operation,
+            amount_operator = '-' if operation == MoneyOperation.PAY_OUT.value else ''
+            self._user.user_profile.update_money_by_amount(
+                amount=f'{amount_operator}{amount}',
+                commit=True,
             )
             action = (
                 'paid outed' if operation == MoneyOperation.PAY_OUT else 'deposited'
