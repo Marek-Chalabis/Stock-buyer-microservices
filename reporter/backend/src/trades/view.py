@@ -21,7 +21,7 @@ class TradesView(BaseSellBuyTradeView):
         trades_for_view = db.session.query(
             stocks,
             (stocks.c.current_price - stocks.c.previous_price).label(
-                'plain_difference'
+                'plain_difference',
             ),
             (
                 cast(

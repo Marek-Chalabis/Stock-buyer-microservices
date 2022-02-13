@@ -1,5 +1,3 @@
-import sqlalchemy
-
 from sqlalchemy import (
     case,
     desc,
@@ -27,7 +25,7 @@ class Stock(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     created_date = db.Column(
         db.DateTime(timezone=True),
-        server_default=sqlalchemy.sql.func.now(),
+        server_default=func.now(),
         nullable=False,
     )
     stock_trades = db.relationship('StockTrade', backref='stock', lazy='dynamic')
@@ -77,16 +75,16 @@ class Stock(db.Model):
             .join(StockTrade, cls.id == StockTrade.stock_id, isouter=True)
             .group_by(cls.symbol)
         ).subquery()
-        date_rank_price = lambda rank: func.sum(
+        date_rank_price = lambda rank: func.sum(  # noqa: E731
             case(
                 [
                     (
                         stocks_date_rank_desc.c.date_rank_desc == rank,
                         stocks_date_rank_desc.c.price,
-                    )
+                    ),
                 ],
                 else_=None,
-            )
+            ),
         )
         query = (
             db.session.query(
@@ -127,7 +125,7 @@ class StockTrade(SaveMixin, db.Model):
     done_by = db.Column(db.Enum(DoneBy), nullable=False)
     created_date = db.Column(
         db.DateTime(timezone=True),
-        server_default=sqlalchemy.sql.func.now(),
+        server_default=func.now(),
         nullable=False,
     )
     user_id = db.Column(db.Integer, db.ForeignKey(column='user.id'), nullable=False)

@@ -31,8 +31,8 @@ class TestBaseSellBuyTradeView:
 
     @pytest.fixture
     def class_obj(self, buy_trades_form):
-        obj = BaseSellBuyTradeViewConcrete()
-        obj._buy_trades_form = buy_trades_form
+        class_obj = BaseSellBuyTradeViewConcrete()
+        class_obj._buy_trades_form = buy_trades_form
         return BaseSellBuyTradeViewConcrete()
 
     def test_methods(self, class_obj):
@@ -67,7 +67,7 @@ class TestBaseSellBuyTradeView:
         mocker_render_template.assert_called_with(
             template_name_or_list='test_template',
             buy_trades_form=class_obj._buy_trades_form,
-            **{'test_key': 'test_data'},
+            test_key='test_data',
         )
 
     def test_handle_buy_trades_form_invalid_form(
@@ -78,12 +78,12 @@ class TestBaseSellBuyTradeView:
         user_in_db,
     ):
         mocker_flash_errors_from_form = mocker.patch(
-            'trades.view_base.flash_errors_from_form'
+            'trades.view_base.flash_errors_from_form',
         )
         class_obj._buy_trades_form.validate_on_submit = mocker.Mock(return_value=False)
         class_obj._handle_buy_trades_form()
         mocker_flash_errors_from_form.assert_called_once_with(
-            form=class_obj._buy_trades_form
+            form=class_obj._buy_trades_form,
         )
 
     def test_handle_buy_trades_form_missing_money(

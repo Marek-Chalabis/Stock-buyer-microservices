@@ -4,8 +4,6 @@ from abc import (
 )
 from typing import Any
 
-import flask_login
-
 from flask import (
     flash,
     render_template,
@@ -13,7 +11,10 @@ from flask import (
 )
 from flask.typing import ResponseReturnValue
 from flask.views import View
-from flask_login import login_required
+from flask_login import (
+    current_user,
+    login_required,
+)
 
 from trades.enums import (
     DoneBy,
@@ -60,25 +61,21 @@ class BaseSellBuyTradeView(ABC, View):
 
     def _handle_buy_trades_form(self) -> None:
         if self._buy_trades_form.validate_on_submit():
-            user_money = change_to_decimal(
-                flask_login.current_user.user_profile.money,
-            )
+            user_money = change_to_decimal(current_user.user_profile.money)
             stock_symbol = request.form.get('bought_stock')
             stock = Stock.get_last_stock_by_symbol(symbol=stock_symbol)
-            stock_price = change_to_decimal(stock.price)
-            cost = self._buy_trades_form.amount.data * stock_price
+            cost = self._buy_trades_form.amount.data * change_to_decimal(stock.price)
             if cost < user_money:
                 stock_trade = StockTrade(
                     quantity=self._buy_trades_form.amount.data,
                     operation=Operation.BUY,
                     done_by=DoneBy.USER,
-                    user=flask_login.current_user,
+                    user=current_user,
                     stock=stock,
                 ).save()
-                plural_trades = 'trade' + 's' if stock_trade.quantity > 1 else ''
                 flash(
                     f'Successfully bought {stock_trade.quantity} '
-                    + f'{stock_trade.stock.symbol} {plural_trades}',
+                    + f'{stock_trade.stock.symbol} trades',
                     category='success',
                 )
             else:
