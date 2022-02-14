@@ -1,6 +1,8 @@
 # Stock-buyer-microservices
 
-> Connected microservices/app to handle and report stock trade fills
+> Project is still under development
+
+> Connected microservices and reporter app to handle and report stock trade fills
 
 ## Table of contents
 
@@ -17,6 +19,12 @@ Projected aimed to simulate the flow of stock exchange transactions and their re
 This is done by connecting separate services into one network.
 (services should be in different repos but for readability they are under one repo):
 
+- [Reporter](reporter): The core of the project, connects all services and enables trades manually or by a bot
+
+- [Stock Screener](stock_screener): Microservice responsible for stock creation
+
+These microservices will be changed or adjusted to reporter logic.
+
 - [Aum server](aum_server): Microservice responsible for splitting trade shares
 
 - [Fill server](fill_server): Microservice responsible for creating fill trades
@@ -24,17 +32,13 @@ This is done by connecting separate services into one network.
 - [Controller server](controller_server): Microservice responsible for creating stock 
 purchase order from gathered data and sending them to position server
 
-- [Reporter](reporter): WIP
-
 ## Setup
 
 1 Install Docker and Docker compose
 
 2 Adjust environment variables in [
-    [Aum server](aum_server/config/environment_variables/.env),
-    [Fill server](fill_server/config/environment_variables/.env),
-    [Controller server](controller_server/config/environment_variables/.env),
-    [Reporter](reporter/config/environment_variables/.env)
+    [Reporter](reporter/config/environment_variables/),
+    [Stock Screener](stock_screener/config/environment_variables/)
 ] or run with default ones
 
 3 Create a network to allow microservices/app to communicate
@@ -45,31 +49,32 @@ purchase order from gathered data and sending them to position server
 
 4 Build images
 ```
-    docker-compose -f fill_server/docker-compose.yaml -f controller_server/docker-compose.yaml -f aum_server/docker-compose.yaml build
+    docker-compose -f reporter/docker-compose.yaml -f stock_screener/docker-compose.yaml build
 ```
 
 5 Run containers
 ```
-    docker-compose -f controller_server/docker-compose.yaml up -d && docker-compose -f aum_server/docker-compose.yaml up -d && docker-compose -f fill_server/docker-compose.yaml up -d
+    docker-compose -f reporter/docker-compose.yaml up -d && docker-compose -f stock_screener/docker-compose.yaml up -d
 ```
 
 ## Tests
 ```
-    docker-compose -f fill_server/docker-compose.yaml run --rm app make full_test_code && docker-compose -f aum_server/docker-compose.yaml run --rm app make full_test_code && docker-compose -f controller_server/docker-compose.yaml run --rm app make full_test_code
+    docker-compose -f stock_screener/docker-compose.yaml run --rm app make full_test_code && docker-compose -f reporter/docker-compose.yaml run --rm app make full_test_code
 ```
 
 ## Technologies
 
-- Python 
+- Python
+- Flask
 - FastAPI 
+- SQLAlchemy 
+- Pytest
+- Docker
+- Docker-Compose
+- PostgreSQL
 - Redis
 - Celery
 
 ## Contact
 
 Created by <b>Marek Chałabis</b> email: chalabismarek@gmail.com
-
-## TODO
-- Prepare docker commands for develop mode
-reporter:
-- endpoint for controller request
