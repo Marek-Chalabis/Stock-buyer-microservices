@@ -48,7 +48,7 @@ class SellTradesForm(FlaskForm):
         available_quantity = next(
             stock
             for stock in current_user.quantity_of_acquired_trades
-            if stock.symbol == stock_symbol.symbol
+            if stock.symbol == stock_symbol
         ).currently_acquired
         if amount_to_validate.data > available_quantity:
             raise wtforms.ValidationError(

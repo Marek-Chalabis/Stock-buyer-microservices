@@ -23,7 +23,7 @@ class TestBuyTradesForm:
 
 class TestSellTradesForm:
     def test_validate_amount(self, mocker, user_in_db, stock):
-        mocker.patch('trades.forms.request.form.get', return_value=stock)
+        mocker.patch('trades.forms.request.form.get', return_value=stock.symbol)
         mocker_currently_acquired = [
             mocker.Mock(symbol=stock.symbol, currently_acquired=1),
         ]
