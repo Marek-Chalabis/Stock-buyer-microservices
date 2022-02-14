@@ -55,7 +55,7 @@ class User(SaveMixin, UserMixin, db.Model):
             ),
         )
         return (
-            db.session.query(
+            db.session.query(  # noqa: WPS221
                 Stock.symbol,
                 currently_acquired.label('currently_acquired'),
             )

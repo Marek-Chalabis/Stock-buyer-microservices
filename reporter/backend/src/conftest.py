@@ -31,8 +31,8 @@ def session(db) -> scoped_session:
     connection = db.engine.connect()
     transaction = connection.begin()
 
-    options = dict(bind=connection, binds={})
-    session_ = db.create_scoped_session(options=options)
+    options = {'bind': connection, 'binds': {}}
+    session_ = db.create_scoped_session(options=options)  # noqa: WPS120
 
     db.session = session_
 

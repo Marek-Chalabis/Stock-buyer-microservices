@@ -40,7 +40,7 @@ wemake-python-styleguide = "^0.16.0"
 branch = true
 source = ["./"]
 # skip files for coverage
-omit = ["tests*",]
+omit = ["tests*", "commands_development.py"]
 data_file = ".tests_reports/.coverage"
 
 [tool.coverage.report]
@@ -113,10 +113,17 @@ ignore = [
     # W503:  line break before binary operator
     "W503",
 ]
-exclude = ".git,"
+exclude = [
+    ".git",
+    "config.py",
+    "commands_development.py",
+]
 per-file-ignores = """
   */test*.py: S101, S106, WPS202, WPS211, WPS214, WPS226, WPS437
-  ./conftest.py: WPS411
+  conftest.py: WPS347, WPS411, WPS440, WPS442, F401, F403
+  app.py: WPS433
+  manage.py: WPS347, WPS433, F401, F403,
+
   */**__init__.py: F401, E402
   */**enums*.py: WPS115
 """
