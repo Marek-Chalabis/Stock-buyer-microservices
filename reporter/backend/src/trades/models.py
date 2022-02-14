@@ -81,7 +81,7 @@ class Stock(db.Model):
                     ),
                 ).label('user_trades_quantity'),
             )
-            .join(StockTrade, cls.id == StockTrade.stock_id, isouter=True)
+            .join(StockTrade, isouter=True)
             .group_by(cls.symbol)
         ).subquery()
         date_rank_price = lambda rank: func.sum(  # noqa: E731
@@ -121,7 +121,7 @@ class Stock(db.Model):
     def get_last_stock_by_symbol(cls, symbol: str) -> 'Stock':
         return (
             db.session.query(cls)
-            .filter(cls.symbol == symbol)
+            .filter_by(symbol=symbol)
             .order_by(desc(cls.created_date))
             .first()
         )
@@ -131,7 +131,7 @@ class Stock(db.Model):
         stocks = self.get_stocks(return_subquery=True)
         return (
             db.session.query(stocks)
-            .filter(Stock.symbol == self.symbol)
+            .filter_by(symbol=self.symbol)
             .first()
             .available_quantity
         )
