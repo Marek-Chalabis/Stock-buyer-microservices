@@ -19,9 +19,10 @@ Projected aimed to simulate the flow of stock exchange transactions and their re
 This is done by connecting separate services into one network.
 (services should be in different repos but for readability they are under one repo):
 
-- [Reporter](reporter): The core of the project, connects all services and enables trades manually or by a bot
+- [Reporter](reporter): The core of the project, 
+connects all services and enables trades manually or by a bot. Exposed on port 5000
 
-- [Stock Screener](stock_screener): Microservice responsible for stock creation
+- [Stock Screener](stock_screener): Microservice responsible for stock creation.
 
 These microservices will be changed or adjusted to reporter logic.
 
@@ -66,11 +67,14 @@ purchase order from gathered data and sending them to position server
 
 - Python
 - Flask
+- Jinja
 - FastAPI 
 - SQLAlchemy 
 - Pytest
 - Docker
 - Docker-Compose
+- JavaScript
+- Bootstrap
 - PostgreSQL
 - Redis
 - Celery
