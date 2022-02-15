@@ -92,23 +92,20 @@ Big tasks:
 
 Medium tasks:
 
-- Add logic for selling trades
 - Add entrypoint for DC (wait for DB, https://testdriven.io/courses/fastapi-celery/docker/)
 - Allow password change
 - Add script for postgresql wait on docker compose up
 - Security: microservices <-> reporter  (security key?)
-- Add action to add money in navbar
 - Cache trades view
 - Cache trade info 
 - Split commands by blueprint
 - Add graph to documentation how system works
 - add tests for model query
-- enable pytest auto
+- enable pytest auto - https://vittoriocamisa.dev/blog/agile-database-integration-tests-with-python-sqlalchemy-and-factory-boy/    https://zhao-li.medium.com/one-to-many-relationship-factory-in-factory-boy-b095810a2180
 - Add scroll to tables on views
 
 Small tasks:
 
-- Verify how money field is presented on navbar for: large numbers, negative numbers
 - remove dev commands on deploy
 
 ## Contact
