@@ -20,7 +20,10 @@ from trades.enums import (
     DoneBy,
     Operation,
 )
-from trades.forms import BuyTradesForm
+from trades.forms import (
+    BuyTradesForm,
+    SellTradesForm,
+)
 from trades.models import (
     Stock,
     StockTrade,
@@ -40,6 +43,7 @@ class BaseSellBuyTradeView(ABC, View):
 
     def __init__(self) -> None:
         self._buy_trades_form = BuyTradesForm()
+        self._sell_trades_form = SellTradesForm()
 
     @property
     @abstractmethod
@@ -52,12 +56,19 @@ class BaseSellBuyTradeView(ABC, View):
         """Data to pass to template."""
 
     def dispatch_request(self) -> ResponseReturnValue:
-        self._handle_buy_trades_form()
+        self._form_handlers()
         return render_template(
             template_name_or_list=self.template_to_render,
             buy_trades_form=self._buy_trades_form,
+            sell_trades_form=self._sell_trades_form,
             **self.data_for_template,
         )
+
+    def _form_handlers(self) -> None:
+        if 'submit_buy_trades' in request.form:
+            self._handle_buy_trades_form()
+        if 'submit_sell_trades' in request.form:
+            self._handle_sell_trades_form()
 
     def _handle_buy_trades_form(self) -> None:
         if self._buy_trades_form.validate_on_submit():
@@ -86,3 +97,22 @@ class BaseSellBuyTradeView(ABC, View):
                 )
         else:
             flash_errors_from_form(form=self._buy_trades_form)
+
+    def _handle_sell_trades_form(self) -> None:
+        if self._sell_trades_form.validate_on_submit():
+            stock_symbol = request.form.get('sold_stock')
+            stock = Stock.get_last_stock_by_symbol(symbol=stock_symbol)
+            stock_trade = StockTrade(
+                quantity=self._buy_trades_form.amount.data,
+                operation=Operation.SELL,
+                done_by=DoneBy.USER,
+                user=current_user,
+                stock=stock,
+            ).save()
+            flash(
+                f'Successfully sold {stock_trade.quantity} '
+                + f'{stock_trade.stock.symbol} trades',
+                category='success',
+            )
+        else:
+            flash_errors_from_form(form=self._sell_trades_form)
