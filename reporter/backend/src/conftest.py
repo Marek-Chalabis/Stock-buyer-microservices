@@ -6,7 +6,7 @@ from sqlalchemy.orm import scoped_session
 
 from app import create_app
 from app import db as _db
-from config import FlaskConfigTesting
+from config import DevelopmentConfig
 # register factories and fixtures
 from trades.tests.conftest import *
 from users.tests.conftest import *
@@ -14,7 +14,7 @@ from users.tests.conftest import *
 
 @pytest.fixture
 def app() -> Flask:
-    app = create_app(config=FlaskConfigTesting)
+    app = create_app(config=DevelopmentConfig)
     yield app
 
 
