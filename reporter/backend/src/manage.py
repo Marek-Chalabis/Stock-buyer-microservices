@@ -1,10 +1,11 @@
 from flask import Flask
 from flask.cli import FlaskGroup
 
-from app import create_app
+from app import create_app, ext_celery
 
 app = create_app()
 cli = FlaskGroup(app)
+celery = ext_celery.celery
 
 
 def is_development_mode(app_to_check: Flask) -> bool:

@@ -22,6 +22,7 @@ services:
       - 5000:5000
     depends_on:
       - db
+      - redis
       - db_test
   db:
     image: postgres:14.1
@@ -37,6 +38,33 @@ services:
       - POSTGRES_USER=db_test
       - POSTGRES_PASSWORD=db_test
       - POSTGRES_DB=db_test
+    networks:
+      reporter_network:
+
+
+
+# TODO https://testdriven.io/courses/flask-celery/docker/
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      reporter_network:
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./config/docker/backend/Dockerfile
+      args:
+        USER_ID: 1000
+        APP_STATUS: development # look for entrypoint
+    #command: celery worker --app=src.celery_app --loglevel=info # TODO entrpoiny
+    command: celery -A src.manage.celery worker --loglevel=info
+ # TODO entrpoiny
+    env_file:
+      - ./config/environment_variables/.env.dev
+    depends_on:
+      - redis
+    volumes: # todo polacz
+      - ./backend/src:/app/src
     networks:
       reporter_network:
 

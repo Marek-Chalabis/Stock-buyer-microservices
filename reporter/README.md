@@ -68,6 +68,9 @@ To create DB with random data use follow command:
 - Jinja
 - JavaScript
 - Bootstrap
+- PostgreSQL
+- Redis
+- Celery
 - [Python packages](backend/pyproject.toml)
 
 ## TODO
@@ -92,6 +95,7 @@ Big tasks:
 
 Medium tasks:
 
+- dc internal network check
 - Add entrypoint for DC (wait for DB, https://testdriven.io/courses/fastapi-celery/docker/)
 - Allow password change
 - Add script for postgresql wait on docker compose up
