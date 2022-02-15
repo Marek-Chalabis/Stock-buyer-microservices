@@ -23,21 +23,22 @@ services:
   redis:
     image: redis:6.2-alpine
     networks:
-      - stock_screener_network
+      stock_screener_network:
 
   celery_beat:
     <<: *app
     command: /app/start-celerybeat
     ports: [ ]
     networks:
-      - stock_screener_network
+      stock_screener_network:
 
   celery_worker:
     <<: *app
     command: /app/start-worker
     ports: [ ]
     networks:
-      - stock_screener_network
+      stock_screener_network:
+      stock_buyer_network:
 
 networks:
   stock_screener_network:
