@@ -97,13 +97,18 @@ class TestBaseSellBuyTradeView:
         ],
     )
     def test_form_handlers(
-        self, mocker, class_obj, app, tested_form, expected_method_call
+        self,
+        mocker,
+        class_obj,
+        app,
+        tested_form,
+        expected_method_call,
     ):
         with app.test_request_context():
             mocker_request = mocker.patch('trades.view_base.request')
             mocker_request.form = tested_form
             mocker_expected_method = mocker.patch(
-                f'trades.view_base.BaseSellBuyTradeView.{expected_method_call}'
+                f'trades.view_base.BaseSellBuyTradeView.{expected_method_call}',
             )
             class_obj._form_handlers()
             mocker_expected_method.assert_called_once_with()
