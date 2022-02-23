@@ -28,16 +28,8 @@ def db(app) -> SQLAlchemy:
 
 @pytest.fixture(scope='function', autouse=True)
 def session(db) -> scoped_session:
-    connection = db.engine.connect()
-    transaction = connection.begin()
-
-    options = {'bind': connection, 'binds': {}}
-    session_ = db.create_scoped_session(options=options)  # noqa: WPS120
-
-    db.session = session_
-
-    yield session_
-
-    transaction.rollback()
-    connection.close()
-    session_.remove()
+    with db.engine.connect() as connection:
+        session_ = db.create_scoped_session(options={'bind': connection, 'binds': {}})  # noqa: WPS120
+        db.session = session_
+        yield session_
+        session_.remove()

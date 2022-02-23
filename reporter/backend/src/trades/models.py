@@ -81,7 +81,7 @@ class Stock(db.Model):
                     ),
                 ).label('user_trades_quantity'),
             )
-            .join(StockTrade, isouter=True)
+            .join(cls.stock_trades, isouter=True)
             .group_by(cls.symbol)
         ).subquery()
         date_rank_price = lambda rank: func.sum(  # noqa: E731

@@ -59,7 +59,7 @@ class User(SaveMixin, UserMixin, db.Model):
                 Stock.symbol,
                 currently_acquired.label('currently_acquired'),
             )
-            .join(StockTrade)
+            .join(Stock.stock_trades)
             .filter(StockTrade.user_id == self.id)
             .group_by(Stock.symbol)
             .having(currently_acquired > 0)
