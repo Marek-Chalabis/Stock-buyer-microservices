@@ -7,9 +7,9 @@ from sqlalchemy import (
     cast,
 )
 
-from app import db
-from trades.models import Stock
-from trades.view_base import BaseSellBuyTradeView
+from src import db
+from src.trades.models import Stock
+from src.trades.view_base import BaseSellBuyTradeView
 
 
 class TradesView(BaseSellBuyTradeView):

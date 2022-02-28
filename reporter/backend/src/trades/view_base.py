@@ -16,20 +16,20 @@ from flask_login import (
     login_required,
 )
 
-from trades.enums import (
+from src.trades.enums import (
     DoneBy,
     Operation,
 )
-from trades.forms import (
+from src.trades.forms import (
     BuyTradesForm,
     SellTradesForm,
 )
-from trades.models import (
+from src.trades.models import (
     Stock,
     StockTrade,
 )
-from utils.type_parsers import change_to_decimal
-from utils.view_utils import flash_errors_from_form
+from src.utils.type_parsers import change_to_decimal
+from src.utils.view_utils import flash_errors_from_form
 
 
 class BaseSellBuyTradeView(ABC, View):

@@ -4,7 +4,7 @@ from flask import request
 from flask_login import current_user
 from flask_wtf import FlaskForm
 
-from trades.models import Stock
+from src.trades.models import Stock
 
 
 class BuyTradesForm(FlaskForm):

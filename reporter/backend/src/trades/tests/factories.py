@@ -2,16 +2,16 @@ from datetime import datetime
 
 import factory
 
-from trades.enums import (
+from src.trades.enums import (
     DoneBy,
     Operation,
 )
-from trades.models import (
+from src.trades.models import (
     Stock,
     StockTrade,
 )
-from users.models import User
-from users.tests.factories import UserFactory
+from src.users.models import User
+from src.users.tests.factories import UserFactory
 
 
 class StockFactory(factory.Factory):

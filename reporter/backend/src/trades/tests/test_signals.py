@@ -2,8 +2,8 @@ from decimal import Decimal
 
 import pytest
 
-from trades.enums import Operation
-from trades.tests.factories import StockTradeFactory
+from src.trades.enums import Operation
+from src.trades.tests.factories import StockTradeFactory
 
 
 @pytest.mark.parametrize(

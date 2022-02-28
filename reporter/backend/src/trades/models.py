@@ -5,13 +5,13 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import MONEY
 
-from app import db
-from trades.enums import (
+from src import db
+from src.trades.enums import (
     DoneBy,
     Operation,
 )
-from utils.models_mixins import SaveMixin
-from utils.typing import QUERY_OR_SUBQUERY
+from src.utils.models_mixins import SaveMixin
+from src.utils.typing import QUERY_OR_SUBQUERY
 
 
 class Stock(db.Model):

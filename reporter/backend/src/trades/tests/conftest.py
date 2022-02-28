@@ -2,7 +2,7 @@ import pytest
 
 from pytest_factoryboy import register
 
-from trades.tests.factories import (
+from src.trades.tests.factories import (
     StockFactory,
     StockTradeFactory,
 )
