@@ -1,15 +1,19 @@
-from flask import (
-    Blueprint,
-    Flask,
-)
+from flask import Flask
 
-from celery import current_app
-from celery.local import Proxy
-
-celery = Blueprint(name='celery', import_name=__name__)
+from celery import Celery
 
 
-def create_celery_app(app: Flask) -> Proxy:
-    celery_app = current_app
-    celery_app.config_from_object(app.config, namespace='CELERY')
-    return celery_app
+def create_celery(app: Flask) -> Celery:
+
+    celery = Celery()
+    celery.config_from_object(app.config, namespace='CELERY')
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery = Celery()
+    celery.config_from_object(app.config, namespace='CELERY')
+    celery.Task = ContextTask
+    return celery
