@@ -5,8 +5,8 @@ import wtforms
 
 from flask_login import login_user
 
-from users.enums import MoneyOperation
-from users.forms import (
+from src.users.enums import MoneyOperation
+from src.users.forms import (
     MoneyForm,
     RegisterForm,
 )
@@ -35,11 +35,11 @@ class TestRegisterForm:
 class TestMoneyForm:
     def test_validate_amount_over_account_money(self, mocker, user_in_db):
         mocker.Mock(
-            data='users.forms.flask_login.current_user',
+            data='src.users.forms.flask_login.current_user',
             return_value=user_in_db,
         )
         mocker.patch(
-            'users.forms.MoneyForm.data',
+            'src.users.forms.MoneyForm.data',
             new_callable=mocker.PropertyMock,
             return_value={'operation': MoneyOperation.PAY_OUT.value},
         )

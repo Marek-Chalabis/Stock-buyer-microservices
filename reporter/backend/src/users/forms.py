@@ -3,9 +3,9 @@ import wtforms
 
 from flask_wtf import FlaskForm
 
-from users.enums import MoneyOperation
-from users.models import User
-from utils.type_parsers import change_to_decimal
+from src.users.enums import MoneyOperation
+from src.users.models import User
+from src.utils.type_parsers import change_to_decimal
 
 
 class RegisterForm(FlaskForm):

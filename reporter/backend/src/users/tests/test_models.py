@@ -2,8 +2,6 @@ from decimal import Decimal
 
 import pytest
 
-from app import db
-
 
 class TestUsers:
     def test_password_hash(self, user_in_db):
@@ -35,6 +33,7 @@ class TestUserProfile:
     )
     def test_update_money_by_amount(
         self,
+        db,
         user_in_db,
         tested_amount,
         tested_commit,

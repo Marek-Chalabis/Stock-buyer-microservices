@@ -9,10 +9,10 @@ from flask import (
 )
 from flask_login import logout_user
 
-from app import login_manager
-from users import users
-from users.models import User
-from users.view import (
+from src import login_manager
+from src.users import users
+from src.users.models import User
+from src.users.view import (
     LoginView,
     ProfileView,
     RegisterView,

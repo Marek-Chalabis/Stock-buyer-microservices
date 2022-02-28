@@ -1,7 +1,7 @@
 from sqlalchemy import event
 
-from app import db
-from users.models import (
+from src import db
+from src.users.models import (
     User,
     UserProfile,
 )
