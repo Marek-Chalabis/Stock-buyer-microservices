@@ -1,5 +1,5 @@
-from app import db
-from utils.models_mixins import SaveMixin
+from src import db
+from src.utils.models_mixins import SaveMixin
 
 
 class SaveMixinConcrete(SaveMixin, db.Model):

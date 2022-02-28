@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from app import db
+from src import db
 
 T = TypeVar('T', bound=db.Model)  # noqa: WPS111
 

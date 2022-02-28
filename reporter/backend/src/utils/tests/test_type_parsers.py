@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from utils.type_parsers import change_to_decimal
+from src.utils.type_parsers import change_to_decimal
 
 
 @pytest.mark.parametrize(

@@ -4,12 +4,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session
 
-from app import create_app
-from app import db as _db
-from config import DevelopmentConfig
+from src import create_app
+from src import db as _db
+from src.config import DevelopmentConfig
+
 # register factories and fixtures
-from trades.tests.conftest import *
-from users.tests.conftest import *
+# from src.trades.tests.conftest import *
+# from src.users.tests.conftest import *
 
 
 @pytest.fixture
@@ -29,7 +30,9 @@ def db(app) -> SQLAlchemy:
 @pytest.fixture(scope='function', autouse=True)
 def session(db) -> scoped_session:
     with db.engine.connect() as connection:
-        session_ = db.create_scoped_session(options={'bind': connection, 'binds': {}})  # noqa: WPS120
+        session_ = db.create_scoped_session(
+            options={'bind': connection, 'binds': {}},
+        )
         db.session = session_
         yield session_
         session_.remove()
