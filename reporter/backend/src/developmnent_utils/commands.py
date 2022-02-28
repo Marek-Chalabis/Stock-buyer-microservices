@@ -7,18 +7,18 @@ from itertools import chain
 
 import httpx
 
-from app import db
-from manage import cli
-from trades.enums import (
+from src import db
+from src.developmnent_utils import development_utils
+from src.trades.enums import (
     DoneBy,
     Operation,
 )
-from trades.models import (
+from src.trades.models import (
     Stock,
     StockTrade,
 )
-from users.models import User
-from utils.type_parsers import change_to_decimal
+from src.users.models import User
+from src.utils.type_parsers import change_to_decimal
 
 
 def random_date_between(start: datetime, end: datetime) -> datetime:
@@ -163,27 +163,27 @@ def populate_db_with_random_stock_trades() -> None:
     print('Random stocks trades created')
 
 
-@cli.command('restart_db')
+@development_utils.cli.command('restart_db')
 def _() -> None:
     restart_db()
 
 
-@cli.command('populate_db_with_random_users')
+@development_utils.cli.command('populate_db_with_random_users')
 def _() -> None:
     populate_db_with_random_users()
 
 
-@cli.command('populate_db_with_random_stocks')
+@development_utils.cli.command('populate_db_with_random_stocks')
 def _() -> None:
     populate_db_with_random_stocks()
 
 
-@cli.command('populate_db_with_random_stock_trades')
+@development_utils.cli.command('populate_db_with_random_stock_trades')
 def _() -> None:
     populate_db_with_random_stock_trades()
 
 
-@cli.command('create_new_develop_db_with_random_data')
+@development_utils.cli.command('create_new_develop_db_with_random_data')
 def create_new_develop_db_with_random_data() -> None:
     restart_db()
     populate_db_with_random_users()
