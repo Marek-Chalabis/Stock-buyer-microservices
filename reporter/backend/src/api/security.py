@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable
+from http import HTTPStatus
 
 from flask import (
     Response,
@@ -9,16 +9,20 @@ from flask import (
 from src import BaseConfig
 
 
-def token_required(func: Callable):
+def token_required(func):
     @wraps(func)
     def decorator(*args, **kwargs):
-        token = None
-        if 'x-api-key' in request.headers:
-            token = request.headers.get('x-api-key')
+        token = request.headers.get('x-api-key')
         if not token:
-            return Response({'message': 'a valid token is missing'}, status=403)
+            return Response(
+                {'message': 'a valid token is missing'},
+                status=HTTPStatus.FORBIDDEN,
+            )
         if token != BaseConfig.SECRET_KEY:
-            return Response({'message': 'token is invalid'}, status=403)
+            return Response(
+                {'message': 'token is invalid'},
+                status=HTTPStatus.FORBIDDEN,
+            )
         return func(*args, **kwargs)
 
     return decorator
