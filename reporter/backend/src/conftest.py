@@ -1,3 +1,4 @@
+# register factories and fixtures
 import pytest
 
 from flask import Flask
@@ -6,8 +7,8 @@ from sqlalchemy.orm import scoped_session
 
 from src import create_app
 from src import db as _db
+from src.api.tests.conftest import *
 from src.config import DevelopmentConfig
-# register factories and fixtures
 from src.trades.tests.conftest import *
 from src.users.tests.conftest import *
 
