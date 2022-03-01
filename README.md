@@ -11,7 +11,6 @@
 - [Tests](#tests)
 - [Technologies](#technologies)
 - [Contact](#contact)
-- [TODO](#todo)
 
 ## General info
 
