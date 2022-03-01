@@ -7,14 +7,14 @@ services:
       dockerfile: ./config/docker/backend/Dockerfile
       args:
         USER_ID: 1000
-        APP_STATUS: development # look for entrypoint
-    command: /app/start
+        APP_STATUS: development
+    command: /start
     env_file:
       - ./config/environment_variables/.env.dev
     depends_on:
       - redis
     volumes:
-      - ./backend/src:/app/src
+      - ./backend:/app
     networks:
       stock_screener_network:
       stock_buyer_network:
@@ -27,14 +27,14 @@ services:
 
   celery_beat:
     <<: *app
-    command: /app/start-celerybeat
+    command: /start-celerybeat
     ports: [ ]
     networks:
       stock_screener_network:
 
   celery_worker:
     <<: *app
-    command: /app/start-worker
+    command: /start-worker
     ports: [ ]
     networks:
       stock_screener_network:
