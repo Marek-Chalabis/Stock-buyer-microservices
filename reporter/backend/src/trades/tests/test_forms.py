@@ -5,7 +5,7 @@ import wtforms
 
 from flask_login import login_user
 
-from trades.forms import (
+from src.trades.forms import (
     BuyTradesForm,
     SellTradesForm,
 )
@@ -13,7 +13,10 @@ from trades.forms import (
 
 class TestBuyTradesForm:
     def test_validate_amount(self, mocker, user_in_db, stock):
-        mocker.patch('trades.forms.Stock.get_last_stock_by_symbol', return_value=stock)
+        mocker.patch(
+            'src.trades.forms.Stock.get_last_stock_by_symbol',
+            return_value=stock,
+        )
         login_user(user_in_db)
         mock_amount = mocker.Mock(data=Decimal(2))
         buy_trades_form = BuyTradesForm()
@@ -23,12 +26,12 @@ class TestBuyTradesForm:
 
 class TestSellTradesForm:
     def test_validate_amount(self, mocker, user_in_db, stock):
-        mocker.patch('trades.forms.request.form.get', return_value=stock.symbol)
+        mocker.patch('src.trades.forms.request.form.get', return_value=stock.symbol)
         mocker_currently_acquired = [
             mocker.Mock(symbol=stock.symbol, currently_acquired=1),
         ]
         mocker.patch(
-            'users.models.User.quantity_of_acquired_trades',
+            'src.users.models.User.quantity_of_acquired_trades',
             new_callable=mocker.PropertyMock,
             return_value=mocker_currently_acquired,
         )

@@ -14,14 +14,14 @@ from flask_login import (
     login_user,
 )
 
-from users.enums import MoneyOperation
-from users.forms import (
+from src.users.enums import MoneyOperation
+from src.users.forms import (
     LoginForm,
     MoneyForm,
     RegisterForm,
 )
-from users.models import User
-from utils.view_utils import flash_errors_from_form
+from src.users.models import User
+from src.utils.view_utils import flash_errors_from_form
 
 
 class RegisterView(View):

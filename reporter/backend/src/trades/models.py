@@ -5,13 +5,13 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import MONEY
 
-from app import db
-from trades.enums import (
+from src import db
+from src.trades.enums import (
     DoneBy,
     Operation,
 )
-from utils.models_mixins import SaveMixin
-from utils.typing import QUERY_OR_SUBQUERY
+from src.utils.models_mixins import SaveMixin
+from src.utils.typing import QUERY_OR_SUBQUERY
 
 
 class Stock(db.Model):
@@ -81,7 +81,7 @@ class Stock(db.Model):
                     ),
                 ).label('user_trades_quantity'),
             )
-            .join(StockTrade, isouter=True)
+            .join(cls.stock_trades, isouter=True)
             .group_by(cls.symbol)
         ).subquery()
         date_rank_price = lambda rank: func.sum(  # noqa: E731

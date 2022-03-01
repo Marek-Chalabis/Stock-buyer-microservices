@@ -1,6 +1,6 @@
 import factory
 
-from users.models import User
+from src.users.models import User
 
 
 class UserFactory(factory.Factory):

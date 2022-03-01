@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
-from users.routes import (
+from src.users.routes import (
     home_page,
     load_user,
     logout_page,
@@ -22,7 +22,7 @@ def test_home_page_status(client, tested_endpoint):
 
 
 def test_home_page_rendered_template(mocker):
-    mocker_render_template = mocker.patch('users.routes.render_template')
+    mocker_render_template = mocker.patch('src.users.routes.render_template')
     home_page()
     mocker_render_template.assert_called_once_with(template_name_or_list='home.html')
 
@@ -47,20 +47,20 @@ def test_logout_page_status(client):
 
 
 def test_logout_page_logout(mocker):
-    mocker_logout_user = mocker.patch('users.routes.logout_user')
+    mocker_logout_user = mocker.patch('src.users.routes.logout_user')
     logout_page()
     mocker_logout_user.assert_called_once_with()
 
 
 def test_logout_page_flash(mocker):
-    mocker_flash = mocker.patch('users.routes.flash')
+    mocker_flash = mocker.patch('src.users.routes.flash')
     logout_page()
     mocker_flash.assert_called_once()
 
 
 def test_logout_page_redirect(mocker):
-    mocker_redirect = mocker.patch('users.routes.redirect')
-    mocker_url_for = mocker.patch('users.routes.url_for')
+    mocker_redirect = mocker.patch('src.users.routes.redirect')
+    mocker_url_for = mocker.patch('src.users.routes.url_for')
     logout_page()
     mocker_url_for.assert_called_once_with(endpoint='users.home_page')
     mocker_redirect.assert_called_once_with(location=mocker_url_for())

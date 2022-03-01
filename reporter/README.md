@@ -48,7 +48,7 @@ You can check this by
 
 To create DB with random data use follow command:
 ```
-    docker-compose exec app python src/manage.py create_new_develop_db_with_random_data
+    docker-compose exec app flask development_utils create_new_develop_db_with_random_data
 ``` 
 ## Tests
 ```
@@ -68,6 +68,9 @@ To create DB with random data use follow command:
 - Jinja
 - JavaScript
 - Bootstrap
+- PostgreSQL
+- Redis
+- Celery
 - [Python packages](backend/pyproject.toml)
 
 ## TODO
@@ -78,14 +81,11 @@ Monster tasks:
 
 Big tasks:
 
-- Implement API for microservices
 - Divides settings/env for prod and develop
 - Add auto trade option for users, by switch on model
 - Add an image for user avatar, also enable changing it
 - Add migrations (alembic)
 - Implement FastAPI for API side of application (FastAPI will be a main server graphql?)
-- Implement Celery/redis for tasks 
-- Add auto population DB with users stock fills and trades
 - Implement better security on between containers in network
 - Fix js to be "better/quicker"
 - Fix code for mypy
@@ -95,18 +95,13 @@ Medium tasks:
 - Add entrypoint for DC (wait for DB, https://testdriven.io/courses/fastapi-celery/docker/)
 - Allow password change
 - Add script for postgresql wait on docker compose up
-- Security: microservices <-> reporter  (security key?)
 - Cache trades view
 - Cache trade info 
-- Split commands by blueprint
 - Add graph to documentation how system works
 - add tests for model query
 - enable pytest auto - https://vittoriocamisa.dev/blog/agile-database-integration-tests-with-python-sqlalchemy-and-factory-boy/    https://zhao-li.medium.com/one-to-many-relationship-factory-in-factory-boy-b095810a2180
 - Add scroll to tables on views
-
-Small tasks:
-
-- remove dev commands on deploy
+- Check 302 redirect in tests
 
 ## Contact
 

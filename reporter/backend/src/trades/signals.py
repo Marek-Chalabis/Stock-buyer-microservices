@@ -1,8 +1,8 @@
 from sqlalchemy import event
 
-from trades.enums import Operation
-from trades.models import StockTrade
-from utils.type_parsers import change_to_decimal
+from src.trades.enums import Operation
+from src.trades.models import StockTrade
+from src.utils.type_parsers import change_to_decimal
 
 
 @event.listens_for(target=StockTrade, identifier='init')

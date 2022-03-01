@@ -1,14 +1,14 @@
 version: "3.8"
 
 services:
-  app:
+  app: &app
     build:
       context: .
       dockerfile: ./config/docker/backend/Dockerfile
       args:
         USER_ID: 1000
-        APP_STATUS: development # Unify with entrypoint
-    command: python src/manage.py run -h 0.0.0.0
+        APP_STATUS: development
+    command: /start
     volumes:
       - ./backend:/app
     env_file:
@@ -19,9 +19,10 @@ services:
         aliases:
           - reporter
     ports:
-      - 5000:5000
+      - "5000:5000"
     depends_on:
       - db
+      - redis
       - db_test
   db:
     image: postgres:14.1
@@ -39,6 +40,18 @@ services:
       - POSTGRES_DB=db_test
     networks:
       reporter_network:
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      reporter_network:
+
+  celery_worker:
+    <<: *app
+    command: /start-worker
+    ports: [ ]
+    networks:
+      reporter_network:
+      #stock_buyer_network:
 
 volumes:
   postgres_data:

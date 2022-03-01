@@ -12,17 +12,17 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import MONEY
 from sqlalchemy.engine import Row
 
-from app import (
+from src import (
     bcrypt,
     db,
 )
-from trades.enums import Operation
-from trades.models import (
+from src.trades.enums import Operation
+from src.trades.models import (
     Stock,
     StockTrade,
 )
-from utils.models_mixins import SaveMixin
-from utils.type_parsers import change_to_decimal
+from src.utils.models_mixins import SaveMixin
+from src.utils.type_parsers import change_to_decimal
 
 
 class User(SaveMixin, UserMixin, db.Model):
@@ -59,7 +59,7 @@ class User(SaveMixin, UserMixin, db.Model):
                 Stock.symbol,
                 currently_acquired.label('currently_acquired'),
             )
-            .join(StockTrade)
+            .join(Stock.stock_trades)
             .filter(StockTrade.user_id == self.id)
             .group_by(Stock.symbol)
             .having(currently_acquired > 0)

@@ -1,11 +1,11 @@
 from unittest.mock import call
 
-from utils.view_utils import flash_errors_from_form
+from src.utils.view_utils import flash_errors_from_form
 
 
 def test_flash_errors_from_form(mocker):
-    mocker_flash = mocker.patch('utils.view_utils.flash')
-    tested_form = mocker.patch('utils.view_utils.FlaskForm')
+    mocker_flash = mocker.patch('src.utils.view_utils.flash')
+    tested_form = mocker.patch('src.utils.view_utils.FlaskForm')
     tested_form.errors = {
         'test_error1': ['test_error1'],
         'test_error2': ['test_error2'],

@@ -1,20 +1,21 @@
+"""register factories and fixtures."""
 import pytest
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session
 
-from app import create_app
-from app import db as _db
-from config import FlaskConfigTesting
-# register factories and fixtures
-from trades.tests.conftest import *
-from users.tests.conftest import *
+from src import create_app
+from src import db as _db
+from src.api.tests.conftest import *
+from src.config import DevelopmentConfig
+from src.trades.tests.conftest import *
+from src.users.tests.conftest import *
 
 
 @pytest.fixture
 def app() -> Flask:
-    app = create_app(config=FlaskConfigTesting)
+    app = create_app(config=DevelopmentConfig)
     yield app
 
 
@@ -28,16 +29,10 @@ def db(app) -> SQLAlchemy:
 
 @pytest.fixture(scope='function', autouse=True)
 def session(db) -> scoped_session:
-    connection = db.engine.connect()
-    transaction = connection.begin()
-
-    options = {'bind': connection, 'binds': {}}
-    session_ = db.create_scoped_session(options=options)  # noqa: WPS120
-
-    db.session = session_
-
-    yield session_
-
-    transaction.rollback()
-    connection.close()
-    session_.remove()
+    with db.engine.connect() as connection:
+        session = db.create_scoped_session(
+            options={'bind': connection, 'binds': {}},
+        )
+        db.session = session
+        yield session
+        session.remove()
