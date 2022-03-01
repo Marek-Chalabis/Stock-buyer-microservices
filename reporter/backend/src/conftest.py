@@ -1,4 +1,4 @@
-# register factories and fixtures
+"""register factories and fixtures."""
 import pytest
 
 from flask import Flask

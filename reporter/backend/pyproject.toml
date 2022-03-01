@@ -105,6 +105,8 @@ ignore = [
     "WPS317",
     # WPS323: Found `%` string formatting
     "WPS323",
+    # WPS332 Found walrus operator
+    "WPS332",
     # Found a line that starts with a dot
     "WPS348",
     # WPS410: Found wrong metadata variable
@@ -122,7 +124,7 @@ exclude = [
     "developmnent_utils",
 ]
 per-file-ignores = """
-  */test*.py: S101, S106, WPS202, WPS211, WPS214, WPS226, WPS437
+  */test*.py: S101, S105, S106, WPS202, WPS211, WPS214, WPS226, WPS437
   conftest.py: WPS347, WPS411, WPS440, WPS442, F401, F403
   */**__init__.py: WPS433, E402, F401
   */**enums*.py: WPS115

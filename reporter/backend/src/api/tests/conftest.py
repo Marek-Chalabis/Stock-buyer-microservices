@@ -24,14 +24,14 @@ def stocks() -> STOCKS:
             {
                 'name': 'test_name_1',
                 'symbol': 'T1',
-                'price': 10.10,
+                'price': 10.1,
                 'quantity': 1,
             },
             {
                 'name': 'test_name_2',
                 'symbol': 'T2',
-                'price': 20.20,
+                'price': 20.2,
                 'quantity': 2,
             },
-        ]
+        ],
     }
