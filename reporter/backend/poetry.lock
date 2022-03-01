@@ -405,7 +405,7 @@ doc = ["sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "13.2.0"
+version = "13.3.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
@@ -1347,7 +1347,7 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
 [[package]]
 name = "testfixtures"
-version = "6.18.4"
+version = "6.18.5"
 description = "A collection of helpers and mock objects for unit tests and doc tests."
 category = "dev"
 optional = false
@@ -1476,7 +1476,7 @@ email = ["email-validator"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "8d193c59567cc915c2dfcd0c7275f1b09b10aec211216298fb62213703425c63"
+content-hash = "642c5aa80d916152f359193a6f0887fb8ada4a716c1ca32075fa87dae3cedc7e"
 
 [metadata.files]
 amqp = [
@@ -1690,8 +1690,8 @@ factory-boy = [
     {file = "factory_boy-3.2.1.tar.gz", hash = "sha256:a98d277b0c047c75eb6e4ab8508a7f81fb03d2cb21986f627913546ef7a2a55e"},
 ]
 faker = [
-    {file = "Faker-13.2.0-py3-none-any.whl", hash = "sha256:206050b40d6dfb6efe8ccfbbb9866c56477c53edfdab83f80de3b59f38a88ce0"},
-    {file = "Faker-13.2.0.tar.gz", hash = "sha256:edb62f9511a0977abcea6a78e43b99d1f26c915d2142bbf4c6bf02a9bb597c7f"},
+    {file = "Faker-13.3.0-py3-none-any.whl", hash = "sha256:7e878365aaf2f6a3f88a689c5f8209b8b93f45e3e9c991272552553006856637"},
+    {file = "Faker-13.3.0.tar.gz", hash = "sha256:618b140c77475786dbe3a5409ad53521cb76746ab7a5c77b99c663f3ef1b1bc2"},
 ]
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
@@ -2177,8 +2177,8 @@ stevedore = [
     {file = "stevedore-3.5.0.tar.gz", hash = "sha256:f40253887d8712eaa2bb0ea3830374416736dc8ec0e22f5a65092c1174c44335"},
 ]
 testfixtures = [
-    {file = "testfixtures-6.18.4-py2.py3-none-any.whl", hash = "sha256:27cfa35006407ef31a4e8752873ca2232fd5761e29047a86c919e363e0e17196"},
-    {file = "testfixtures-6.18.4.tar.gz", hash = "sha256:878f617c411793f155c26b39330a095a1cc58844d88bcdc767a65c7fc2096b54"},
+    {file = "testfixtures-6.18.5-py2.py3-none-any.whl", hash = "sha256:7de200e24f50a4a5d6da7019fb1197aaf5abd475efb2ec2422fdcf2f2eb98c1d"},
+    {file = "testfixtures-6.18.5.tar.gz", hash = "sha256:02dae883f567f5b70fd3ad3c9eefb95912e78ac90be6c7444b5e2f46bf572c84"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},

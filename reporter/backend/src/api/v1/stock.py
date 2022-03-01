@@ -1,10 +1,21 @@
+from flask import (
+    Response,
+    request,
+)
 from flask.views import MethodView
-from flask import Flask, jsonify, request
-from api.v1.tasks import divide
+
+from src.api.security import token_required
+from src.api.v1.schemas import StocksSchema
+from src.api.v1.tasks import add_stock
+
+stocks_schema = StocksSchema()
+
+
 class Stock(MethodView):
-    def post(self):
-        #new_language_name = request.json()
-        print(request.json)
-        divide.delay()
-    def get(self):
-        return {'dasd': 123}
+    decorators = [token_required]
+
+    def post(self) -> Response:
+        if errors := stocks_schema.validate(request.json):
+            return Response(str(errors), status=422)  # TODO check for type
+        add_stock.delay(stocks=request.json)
+        return Response(status=201)

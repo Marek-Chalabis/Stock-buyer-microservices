@@ -20,4 +20,5 @@ def token_required(func: Callable):
         if token != BaseConfig.SECRET_KEY:
             return Response({'message': 'token is invalid'}, status=403)
         return func(*args, **kwargs)
+
     return decorator
