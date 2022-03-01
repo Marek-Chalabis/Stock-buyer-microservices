@@ -25,3 +25,5 @@ class DevelopmentConfig(BaseConfig):
     TESTING = True
     BCRYPT_LOG_ROUNDS = 4
     SQLALCHEMY_DATABASE_URI = f'postgresql://db_test:db_test@db_test:5432/db_test'
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_ECHO = True
