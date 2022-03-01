@@ -6,7 +6,7 @@
 - [General info](#general-info)
 - [API documentation](#api-documentation)
 - [Setup](#setup) 
-- [Develop Setup](#develop setup) 
+- [Develop Setup](#develop-setup) 
 - [Tests](#tests)
 - [Code format](#code-format)
 - [Technologies](#technologies)
@@ -27,7 +27,7 @@ Documentation for API can found at this endpoints after running container:
 
 1 Install Docker
 
-2 Adjust environment variables in [.env](config/environment_variables/.env)
+2 Adjust environment variables in [.env](config/environment_variables)
 
 3 Change USER_ID arg in [docker-compose.yaml](docker-compose.yaml) if your local UID is different then 1000, this will fix local file permissions.
 
@@ -102,6 +102,7 @@ Medium tasks:
 - enable pytest auto - https://vittoriocamisa.dev/blog/agile-database-integration-tests-with-python-sqlalchemy-and-factory-boy/    https://zhao-li.medium.com/one-to-many-relationship-factory-in-factory-boy-b095810a2180
 - Add scroll to tables on views
 - Check 302 redirect in tests
+- Add endpoints documentation
 
 ## Contact
 
