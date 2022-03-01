@@ -81,4 +81,6 @@ purchase order from gathered data and sending them to position server
 
 ## Contact
 
-Created by <b>Marek Chałabis</b> email: chalabismarek@gmail.com
+Created by <b>Marek Chałabis</b> 
+
+email: chalabismarek@gmail.com
