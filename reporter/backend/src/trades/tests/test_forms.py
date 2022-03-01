@@ -14,7 +14,8 @@ from src.trades.forms import (
 class TestBuyTradesForm:
     def test_validate_amount(self, mocker, user_in_db, stock):
         mocker.patch(
-            'src.trades.forms.Stock.get_last_stock_by_symbol', return_value=stock
+            'src.trades.forms.Stock.get_last_stock_by_symbol',
+            return_value=stock,
         )
         login_user(user_in_db)
         mock_amount = mocker.Mock(data=Decimal(2))

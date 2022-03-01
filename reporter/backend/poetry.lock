@@ -1476,7 +1476,7 @@ email = ["email-validator"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "cba41db8e347c5bf295c6de7b98f60bb7702395ca13c5f3d25f6ac830fcfa5a1"
+content-hash = "8d193c59567cc915c2dfcd0c7275f1b09b10aec211216298fb62213703425c63"
 
 [metadata.files]
 amqp = [

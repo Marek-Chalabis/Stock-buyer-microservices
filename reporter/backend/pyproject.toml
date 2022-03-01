@@ -17,7 +17,6 @@ psycopg2 = "^2.9.3"
 environs = "^9.4.0"
 httpx = "^0.21.3"
 celery = "^5.2.3"
-Flask-CeleryExt = "^0.3.4"
 redis = "^4.1.0"
 
 [tool.poetry.dev-dependencies]
@@ -119,15 +118,12 @@ ignore = [
 exclude = [
     ".git",
     "config.py",
-    "commands_development.py",
+    "developmnent_utils",
 ]
 per-file-ignores = """
   */test*.py: S101, S106, WPS202, WPS211, WPS214, WPS226, WPS437
   conftest.py: WPS347, WPS411, WPS440, WPS442, F401, F403
-  app.py: WPS433
-  manage.py: WPS347, WPS433, F401, F403,
-
-  */**__init__.py: F401, E402
+  */**__init__.py: WPS433, E402, F401
   */**enums*.py: WPS115
 """
 

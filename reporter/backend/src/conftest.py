@@ -7,10 +7,9 @@ from sqlalchemy.orm import scoped_session
 from src import create_app
 from src import db as _db
 from src.config import DevelopmentConfig
-
 # register factories and fixtures
-# from src.trades.tests.conftest import *
-# from src.users.tests.conftest import *
+from src.trades.tests.conftest import *
+from src.users.tests.conftest import *
 
 
 @pytest.fixture
@@ -30,9 +29,9 @@ def db(app) -> SQLAlchemy:
 @pytest.fixture(scope='function', autouse=True)
 def session(db) -> scoped_session:
     with db.engine.connect() as connection:
-        session_ = db.create_scoped_session(
+        session = db.create_scoped_session(
             options={'bind': connection, 'binds': {}},
         )
-        db.session = session_
-        yield session_
-        session_.remove()
+        db.session = session
+        yield session
+        session.remove()
