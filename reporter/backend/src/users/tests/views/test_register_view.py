@@ -9,15 +9,15 @@ class TestRegisterView:
 
     @pytest.fixture
     def register_form(self, mocker):
-        mocker_register_form = mocker.patch('src.users.view.RegisterForm')
-        mocker_form = mocker.Mock(
-            validate_on_submit=mocker.Mock(return_value=False),
-            username=mocker.Mock(data='test_username'),
-            email=mocker.Mock(data='test_email'),
-            password=mocker.Mock(data='test_password'),
+        return mocker.patch(
+            'src.users.view.RegisterForm',
+            return_value=mocker.Mock(
+                validate_on_submit=mocker.Mock(return_value=False),
+                username=mocker.Mock(data='test_username'),
+                email=mocker.Mock(data='test_email'),
+                password=mocker.Mock(data='test_password'),
+            ),
         )
-        mocker_register_form.return_value = mocker_form
-        return mocker_register_form
 
     def test_dispatch_request_validate_correct(self, mocker):
         mocker_handle_correct_register_form = mocker.patch(

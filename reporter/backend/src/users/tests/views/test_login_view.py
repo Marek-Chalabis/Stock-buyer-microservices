@@ -12,14 +12,14 @@ class TestLoginView:
 
     @pytest.fixture
     def login_form(self, mocker):
-        mocker_login_form = mocker.patch('src.users.view.LoginForm')
-        mocker_form = mocker.Mock(
-            validate_on_submit=mocker.Mock(return_value=True),
-            username=mocker.Mock(data='test_username'),
-            password=mocker.Mock(data='test_password'),
+        return mocker.patch(
+            'src.users.view.LoginForm',
+            return_value=mocker.Mock(
+                validate_on_submit=mocker.Mock(return_value=True),
+                username=mocker.Mock(data='test_username'),
+                password=mocker.Mock(data='test_password'),
+            ),
         )
-        mocker_login_form.return_value = mocker_form
-        return mocker_login_form
 
     def test_dispatch_request_valid(self, mocker, login_form):
         mocker_get_user_from_form = mocker.patch(

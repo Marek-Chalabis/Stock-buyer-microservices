@@ -24,23 +24,23 @@ class BaseSellBuyTradeViewConcrete(BaseSellBuyTradeView):
 class TestBaseSellBuyTradeView:
     @pytest.fixture
     def buy_trades_form(self, mocker):
-        mocker_buy_trades_form = mocker.patch('src.trades.view_base.BuyTradesForm')
-        mocker_form = mocker.Mock(
-            validate_on_submit=mocker.Mock(return_value=True),
-            amount=mocker.Mock(data=Decimal(1)),
+        return mocker.patch(
+            'src.trades.view_base.BuyTradesForm',
+            return_value=mocker.Mock(
+                validate_on_submit=mocker.Mock(return_value=True),
+                amount=mocker.Mock(data=Decimal(1)),
+            ),
         )
-        mocker_buy_trades_form.return_value = mocker_form
-        return mocker_buy_trades_form
 
     @pytest.fixture
     def sell_trades_form(self, mocker):
-        mocker_sell_trades_form = mocker.patch('src.trades.view_base.SellTradesForm')
-        mocker_form = mocker.Mock(
-            validate_on_submit=mocker.Mock(return_value=True),
-            amount=mocker.Mock(data=Decimal(1)),
+        return mocker.patch(
+            'src.trades.view_base.SellTradesForm',
+            return_value=mocker.Mock(
+                validate_on_submit=mocker.Mock(return_value=True),
+                amount=mocker.Mock(data=Decimal(1)),
+            ),
         )
-        mocker_sell_trades_form.return_value = mocker_form
-        return mocker_sell_trades_form
 
     @pytest.fixture
     def class_obj(self, buy_trades_form, sell_trades_form):
