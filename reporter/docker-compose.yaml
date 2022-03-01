@@ -7,7 +7,7 @@ services:
       dockerfile: ./config/docker/backend/Dockerfile
       args:
         USER_ID: 1000
-        APP_STATUS: development # TODO Unify with entrypoint
+        APP_STATUS: development
     command: /start
     volumes:
       - ./backend:/app
@@ -19,7 +19,7 @@ services:
         aliases:
           - reporter
     ports:
-      - 5000:5000
+      - "5000:5000"
     depends_on:
       - db
       - redis
