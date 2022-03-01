@@ -41,20 +41,17 @@ RUN chmod -R 755 /app
 
 # add scripts for runinng services
 # RUN sed -i 's/\r$//g' converts lines to UNIX endings necessary for Windows OS
-COPY config/docker/backend/app/start.sh /app/start
-RUN sed -i 's/\r$//g' /app/start
-RUN chmod +x /app/start
+COPY config/docker/backend/app/start.sh /start
+RUN sed -i 's/\r$//g' /start
+RUN chmod +x /start
 
-COPY config/docker/backend/celery/beat/start.sh /app/start-celerybeat
-RUN sed -i 's/\r$//g' /app/start-celerybeat
-RUN chmod +x /app/start-celerybeat
+COPY config/docker/backend/celery/beat/start.sh /start-celerybeat
+RUN sed -i 's/\r$//g' /start-celerybeat
+RUN chmod +x /start-celerybeat
 
-COPY config/docker/backend/celery/worker/start.sh /app/start-worker
-RUN sed -i 's/\r$//g' /app/start-worker
-RUN chmod +x /app/start-worker
-
-# copy code
-COPY ./backend/ /app/
+COPY config/docker/backend/celery/worker/start.sh /start-worker
+RUN sed -i 's/\r$//g' /start-worker
+RUN chmod +x /start-worker
 
 # started path for conteiner
 WORKDIR /app/
